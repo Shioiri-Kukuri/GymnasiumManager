@@ -10,10 +10,10 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.liusp</groupId>
-    <artifactId>health_common</artifactId>
+    <groupId>com.vky</groupId>
+    <artifactId>gymnasium_common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>health_common</name>
+    <name>gymnasium_common</name>
     <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 

@@ -9,10 +9,10 @@
         <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
     </parent>
 
-    <groupId>com.liusp</groupId>
-    <artifactId>health_interface</artifactId>
+    <groupId>com.vky</groupId>
+    <artifactId>gymnasium_interface</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>health_interface</name>
+    <name>gymnasium_interface</name>
     <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
     <properties>

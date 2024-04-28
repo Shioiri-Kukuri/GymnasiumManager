@@ -9,11 +9,11 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.liusp</groupId>
-    <artifactId>health_service_provider</artifactId>
+    <groupId>com.vky</groupId>
+    <artifactId>gymnasium_service_provider</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>health_service_provider</name>
+    <name>gymnasium_service_provider</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
