@@ -13,9 +13,6 @@
 
     <!--子项目聚合-->
     <modules>
-
-<!--        <module>health_mobile</module>-->
-<!--        <module>spring_security_demo</module>-->
         <module>gymnasium_common</module>
         <module>gymnasium_interface</module>
         <module>gymnasium_backend</module>
