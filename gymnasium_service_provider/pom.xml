@@ -3,16 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.vky</groupId>
-        <artifactId>gymnasium_manager</artifactId>
+        <artifactId>gymnasium_parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.vky</groupId>
-    <artifactId>gymnasium_service_provider</artifactId>
+    <groupId>com.liusp</groupId>
+    <artifactId>health_service_provider</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>gymnasium_service_provider</name>
+    <name>health_service_provider</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -98,7 +99,7 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.3.0</version>
+            <version>1.2.5</version>
         </dependency>
 
         <!-- 引入redis-->

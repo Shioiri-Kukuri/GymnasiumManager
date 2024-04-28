@@ -4,15 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.vky</groupId>
-        <artifactId>gymnasium_manager</artifactId>
+        <artifactId>gymnasium_parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
     </parent>
 
-    <groupId>com.vky</groupId>
-    <artifactId>gymnasium_interface</artifactId>
+    <groupId>com.liusp</groupId>
+    <artifactId>health_interface</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gymnasium_interface</name>
+    <name>health_interface</name>
     <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -20,8 +20,8 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>com.vky</groupId>
-            <artifactId>gymnasium_common</artifactId>
+            <groupId>com.liusp</groupId>
+            <artifactId>health_common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
