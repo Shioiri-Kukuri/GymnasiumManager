@@ -25,6 +25,5 @@
         <module>gymnasium_interface</module>
         <module>gymnasium_backend</module>
         <module>gymnasium_service_provider</module>
-        <module>gymnasium_interface</module>
     </modules>
 </project>

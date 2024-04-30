@@ -90,8 +90,8 @@
 
 
         <dependency>
-            <groupId>com.liusp</groupId>
-            <artifactId>health_interface</artifactId>
+            <groupId>com.vky</groupId>
+            <artifactId>gymnasium_interface</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
