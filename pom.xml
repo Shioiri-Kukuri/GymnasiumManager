@@ -7,14 +7,6 @@
     <artifactId>gymnasium_manager</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gymnasium_manager</name>
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>3.2.4</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
     <!--设置为pom父工程-->
     <packaging>pom</packaging>
     <description>Demo project for Spring Boot</description>
