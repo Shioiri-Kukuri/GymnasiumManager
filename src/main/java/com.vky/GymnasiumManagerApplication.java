@@ -1,4 +1,3 @@
-/*
 package com.vky;
 
 import org.springframework.boot.SpringApplication;
@@ -12,4 +11,4 @@ public class GymnasiumManagerApplication {
     }
 
 }
-*/
+
