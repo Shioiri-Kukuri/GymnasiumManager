@@ -9,7 +9,6 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.vky</groupId>
     <artifactId>gymnasium_service_provider</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
@@ -53,7 +52,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <!-- 加了scope会导致application.yml文件报红，但不影响操作，可加可不加，不加application.yml文件不会报红 -->
             <!-- <scope>runtime</scope> -->
-            <!--<version>5.1.49</version>-->
+            <version>5.1.49</version>
         </dependency>
         <!-- mybatis -->
         <dependency>
