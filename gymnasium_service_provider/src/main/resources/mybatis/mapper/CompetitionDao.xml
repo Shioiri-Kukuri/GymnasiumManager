@@ -3,7 +3,42 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vky.dao.CompetitionDao">
     <!--新增-->
-    <insert id="add" parameterType="com.vky.pojo.Competition">
-
+    <insert id="save" parameterType="com.vky.pojo.Competition">
+        insert into c_competition(name, sort, type_id, status)
+        values
+            (#{name}, #{sort}, #{typeId}, #{status})
     </insert>
+    <update id="edit" parameterType="com.vky.pojo.Competition">
+        update c_competition
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            <if test="typeId != null">
+                type_id = #{typeId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from c_competition where id = #{id}
+    </delete>
+    <select id="selectByCondition" parameterType="string" resultType="com.vky.pojo.Competition">
+        select * from c_competition
+        <if test="value != null and value.length > 0">
+            where name like concat('%',#{value},'%')
+        </if>
+    </select>
+    <select id="getById" resultType="com.vky.pojo.Competition" parameterType="int">
+        select * from c_competition where id = #{id}
+    </select>
+
+
+
 </mapper>

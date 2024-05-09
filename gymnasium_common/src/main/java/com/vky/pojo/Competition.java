@@ -2,6 +2,7 @@ package com.vky.pojo;
 
 import java.time.LocalDateTime;
 
+
 public class Competition {
     private Long id;
 

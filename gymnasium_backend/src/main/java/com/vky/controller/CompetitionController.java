@@ -20,25 +20,62 @@ public class CompetitionController {
     //TODO 新增操作
     @RequestMapping("/add.do")
     public Result add(@RequestBody Competition competition){
-        return null;
+        try {
+            competitionService.save(competition);
+        }catch (Exception e){
+            //新增失败
+            return new Result(false, "新增失败");
+        }
+        //新增成功
+        return new Result(true,"新增成功");
+
+
     }
 
     //TODO 分页查询
     @RequestMapping("/findPage.do")
     public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
-        return null;
+        PageResult pageResult = competitionService.pageQuery(
+                queryPageBean.getCurrentPage(),
+                queryPageBean.getPageSize(),
+                queryPageBean.getQueryString()
+        );
+        return pageResult;
+    }
+
+    @RequestMapping("/findById.do")
+    public Result findById(Integer id){
+        Competition competition = competitionService.getById(id);
+        if(competition != null){
+            Result result = new Result(true, "分页查询成功执行");
+            result.setData(competition);
+            return result;
+        }
+        return new Result(false,"分页查询执行失败");
     }
 
     //TODO 删除操作
     @RequestMapping("/delete.do")
     public Result delete(Integer id){
-        return null;
+        try {
+            competitionService.deleteById(id);
+        }catch (RuntimeException e){
+            return new Result(false,e.getMessage());
+        }catch (Exception e){
+            return new Result(false,"删除失败");
+        }
+        return new Result(true,"删除成功");
     }
 
     //TODO 编辑操作
     @RequestMapping("/edit.do")
     public Result edit(@RequestBody Competition competition){
-        return null;
+        try {
+           competitionService.edit(competition);
+        }catch (Exception e){
+            return new Result(false,"编辑失败");
+        }
+        return new Result(true,"编辑成功");
     }
 
 
