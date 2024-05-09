@@ -46,7 +46,21 @@
             </exclusions>
         </dependency>
 
-
+        <!-- MyBatis依赖 -->
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <!-- 加了scope会导致application.yml文件报红，但不影响操作，可加可不加，不加application.yml文件不会报红 -->
+            <!-- <scope>runtime</scope> -->
+            <version>5.1.49</version>
+        </dependency>
+        <!-- mybatis -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.3</version>
+        </dependency>
 
         <!--阿里数据源-->
         <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
@@ -126,7 +140,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.7.RELEASE</version>
                 <configuration>
-                    <mainClass>com.liusp.HealthServiceProviderApplication</mainClass>
+                    <mainClass>com.vky.GymnasiumServiceProviderApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
@@ -136,6 +150,12 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!--            war包-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
             </plugin>
         </plugins>
     </build>
