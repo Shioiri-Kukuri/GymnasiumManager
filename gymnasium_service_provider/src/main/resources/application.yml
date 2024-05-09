@@ -4,8 +4,8 @@ server:
 
 spring:
   datasource:
-    username: root
-    password: root
+    username: vky
+    password: 123456
     url: jdbc:mysql://localhost:3306/gm?characterEncoding=UTF-8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
