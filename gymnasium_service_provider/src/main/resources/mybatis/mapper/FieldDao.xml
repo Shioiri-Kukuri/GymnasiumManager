@@ -7,14 +7,14 @@
     <select id="selectByCondition" parameterType="string" resultType="com.vky.pojo.Field">
         select * from f_field
         <if test="value != null and value.length > 0">
-            where name like concat('%',#{value},'%')
+            where field_name like concat('%',#{fieldName},'%')
         </if>
     </select>
 
 <!--    添加-->
     <insert id="add" parameterType="com.vky.pojo.Field">
         insert into f_field(field_no,field_name,field_type, field_cost)
-        values(#{fieldNo,#{fieldName},#{fieldType},#{fieldCost})
+        values(#{fieldNo},#{fieldName},#{fieldType},#{fieldCost})
     </insert>
     
 <!--    根据id查询-->
