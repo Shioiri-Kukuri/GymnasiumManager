@@ -21,7 +21,7 @@
                 type_id = #{typeId},
             </if>
             <if test="status != null">
-                status = #{status},
+                status = #{status}
             </if>
         </set>
         where id = #{id}
@@ -31,8 +31,8 @@
     </delete>
     <select id="selectByCondition" parameterType="string" resultType="com.vky.pojo.Competition">
         select * from c_competition
-        <if test="value != null and value.length > 0">
-            where name like concat('%',#{value},'%')
+        <if test="queryString != null and queryString.length > 0">
+            where name like concat('%',#{queryString},'%')
         </if>
     </select>
     <select id="getById" resultType="com.vky.pojo.Competition" parameterType="int">
