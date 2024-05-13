@@ -6,8 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+//添加对Dubbo的支持
 @EnableDubbo
 @MapperScan("com.vky.dao")
+
 public class GymnasiumServiceProviderApplication {
 
     public static void main(String[] args) {

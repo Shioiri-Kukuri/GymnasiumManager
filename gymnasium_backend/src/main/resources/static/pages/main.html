@@ -1,160 +1,191 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <!-- 页面meta -->
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>海大体育馆管理系统</title>
-    <meta name="description" content="海大体育馆管理系统">
-    <meta name="keywords" content="海大体育馆管理系统">
-    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
-    <!-- 引入样式 -->
     <link rel="stylesheet" href="../plugins/elementui/index.css">
     <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <script src="../js/axios-0.18.0.js"></script>
-    <style type="text/css">
-    .el-main{
-        position: absolute;
-        top: 70px;
-        bottom: 0px;
-        left: 200px;
-        right: 10px;
-        padding: 0;
-    }
+    <style>
+        .el-main {
+            position: absolute;
+            top: 70px;
+            bottom: 0;
+            left: 200px;
+            right: 10px;
+            padding: 0;
+        }
     </style>
 </head>
 <body class="hold-transition skin-purple sidebar-mini">
-    <div id="app">
+<div id="app">
+    <el-container>
+        <el-header class="main-header" style="height:70px;">
+            <nav class="navbar navbar-static-top">
+                <a href="#" class="logo" style="text-align:center">
+                    <span class="logo-lg"><img src="../img/log1.png" style="height:30px;width:30px;"></span>
+                </a>
+                <div class="right-menu">
+                    <span class="help"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> 帮助</span>
+                    <el-dropdown class="avatar-container right-menu-item" trigger="click">
+                        <div class="avatar-wrapper">
+                            <img src="../img/user2-160x160.jpg" class="user-avatar">
+                            <!-- 展示用户名 -->
+                            {{ username }}
+                        </div>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item
+                                    v-for="(action, index) in loginOrProfileActions"
+                                    :key="index"
+                                    :divided="index !== 0"
+                            >
+                                <a :href="action.linkUrl" target="_self">{{ action.title }}</a>
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
+            </nav>
+        </el-header>
         <el-container>
-            <el-header  class="main-header" style="height:70px;">
-                <nav class="navbar navbar-static-top" :class=''>
-                    <!-- Logo -->
-                    <a href="#" class="logo" style="text-align:center">
-                        <span class="logo-lg"><img src="../img/log1.png" style="height:30px;weight:30px;"></span>
-                    </a>
-                    <div class="right-menu">
-                        <span class="help"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>帮助</span>
-                        <el-dropdown class="avatar-container right-menu-item" trigger="click">
-                            <div class="avatar-wrapper">
-                                <img src="../img/user2-160x160.jpg" class="user-avatar">
-                                <!--展示用户名-->
-                                {{username}}
-                            </div>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item divided>
-                                    <span style="display:block;">修改密码</span>
-                                </el-dropdown-item>
-                                <el-dropdown-item divided>
-                                        <span style="display:block;"><a href="/logout">退出</a></span>
-                                    </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </div>
-                </nav>
-            </el-header>
+            <el-aside width="200px">
+                <el-menu>
+                    <el-submenu
+                            v-for="(menu, menuIndex) in menuList"
+                            :key="menuIndex"
+                            :index="menu.path"
+                    >
+                        <template slot="title">
+                            <i class="fa" :class="menu.icon"></i>
+                            {{ menu.title }}
+                        </template>
+                        <el-menu-item
+                                v-for="(child, childIndex) in menu.children"
+                                :key="childIndex"
+                                :index="child.path"
+                        >
+                            <a :href="child.linkUrl" target="right">{{ child.title }}</a>
+                        </el-menu-item>
+                    </el-submenu>
+                </el-menu>
+            </el-aside>
             <el-container>
-                <el-aside width="200px">
-                    <el-menu>
-                        <el-submenu v-for="menu in menuList" :index="menu.path">
-                            <template slot="title">
-                                <i class="fa" :class="menu.icon"></i>
-                                {{menu.title}}
-                            </template>
-                            <template v-for="child in menu.children">
-                                <el-menu-item :index="child.path">
-                                    <a :href="child.linkUrl" target="right">{{child.title}}</a>
-                                </el-menu-item>
-                            </template>
-                        </el-submenu>
-                    </el-menu>
-                </el-aside>
-                <el-container>
-                    <iframe name="right" class="el-main" src="ordersetting.html" width="100%" height="580px" frameborder="0"></iframe>
-                </el-container>
+                <iframe
+                        name="right"
+                        class="el-main"
+                        src="ordersetting.html"
+                        width="100%"
+                        height="580px"
+                        frameborder="0"
+                ></iframe>
             </el-container>
         </el-container>
-    </div>
-</body>
-<!-- 引入组件库 -->
+    </el-container>
+</div>
+
+<!-- 脚本引入 -->
 <script src="../js/vue.js"></script>
 <script src="../plugins/elementui/index.js"></script>
-<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/jquery.min.js"></script>
 <script>
     new Vue({
         el: '#app',
-        data:{
-            username:null,//用户名
-            menuList:[
-                {
-                    "path": "1",
-                    "title": "工作台",
-                    "icon":"fa-dashboard",
-                    "children": []
-                },
-
-                {
-                    "path": "3",
-                    "title": "预约管理",
-                    "icon":"fa-tty",
-                    "children": [
-                        {
-                            "path": "/3-2",
-                            "title": "预约设置",
-                            "linkUrl":"ordersetting.html",
-                            "children":[]
-                        },
-                        {
-                            "path": "/3-3",
-                            "title": "套餐管理",
-                            "linkUrl":"setmeal.html",
-                            "children":[]
-                        },
-                        {
-                            "path": "/3-4",
-                            "title": "检查组管理",
-                            "linkUrl":"checkgroup.html",
-                            "children":[]
-                        },
-                        {
-                            "path": "/3-5",
-                            "title": "检查项管理",
-                            "linkUrl":"checkitem.html",
-                            "children":[]
-                        },
-                    ]
-                },
-                {
-                    "path": "5",     //菜单项所对应的路由路径
-                    "title": "用户管理",     //菜单项名称
-                    "icon":"el-icon-setting",
-                    "children":[//是否有子菜单，若没有，则为[]
-                        {
-                            "path": "/5-1",
-                            "title": "管理普通用户",
-                            "linkUrl":"managementadmin.html",
-                            "children":[]
-                        },
-                        {
-                            "path": "/5-2",
-                            "title": "管理管理员",
-                            "linkUrl":"managementusers.html",
-                            "children":[]
-                        },
-                    ]
-                }
-            ]
+        data() {
+            return {
+                username: null,
+                isLoggedIn: false,
+                menuList: [
+                    {
+                        "path": "1",
+                        "title": "工作台",
+                        "icon":"fa-dashboard",
+                        "children": []
+                    },
+                    {
+                        "path": "3",
+                        "title": "预约管理",
+                        "icon":"fa-tty",
+                        "children": [
+                            {
+                                "path": "/3-2",
+                                "title": "预约设置",
+                                "linkUrl":"ordersetting.html",
+                                "children":[]
+                            },
+                            {
+                                "path": "/3-3",
+                                "title": "套餐管理",
+                                "linkUrl":"setmeal.html",
+                                "children":[]
+                            },
+                            {
+                                "path": "/3-4",
+                                "title": "检查组管理",
+                                "linkUrl":"checkgroup.html",
+                                "children":[]
+                            },
+                            {
+                                "path": "/3-5",
+                                "title": "检查项管理",
+                                "linkUrl":"checkitem.html",
+                                "children":[]
+                            },
+                        ]
+                    },
+                    {
+                        "path": "5",     //菜单项所对应的路由路径
+                        "title": "统计分析",     //菜单项名称
+                        "icon":"fa-heartbeat",
+                        "children":[//是否有子菜单，若没有，则为[]
+                            {
+                                "path": "/5-1",
+                                "title": "会员数量统计",
+                                "linkUrl":"report_member.html",
+                                "children":[]
+                            },
+                            {
+                                "path": "/5-2",
+                                "title": "套餐预约占比统计",
+                                "linkUrl":"report_setmeal.html",
+                                "children":[]
+                            },
+                            {
+                                "path": "/5-3",
+                                "title": "运营数据统计",
+                                "linkUrl":"report_business.html",
+                                "children":[]
+                            }
+                        ]
+                    }
+                ]
+            };
         },
-        created(){
-            //发送请求获取当前登录用户的用户名
-            axios.get('/user/getUsername.do').then((response)=>{
-                this.username = response.data.data;
-        });
+        computed: {
+            loginOrProfileActions() {
+                return this.isLoggedIn
+                    ? [
+                        { title: '修改密码', linkUrl: '#' },
+                        { title: '退出', linkUrl: '/logout' }
+                    ]
+                    : [{ title: '登录', linkUrl: 'login.html' }];
+            }
+        },
+        created() {
+            axios.get('/user/getUsername.do')
+                .then(response => {
+                    this.username = response.data.data;
+                    this.isLoggedIn = true;
+                });
         }
     });
+
+    // 页面加载时调整容器宽度
     $(function() {
-            var wd = 200;
-            $(".el-main").css('width', $('body').width() - wd + 'px');
+        const wd = 200;
+        $('.el-main').css('width', `calc(100% - ${wd}px)`);
     });
 </script>
+</body>
 </html>

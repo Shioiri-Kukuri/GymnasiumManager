@@ -1,6 +1,5 @@
 package com.vky.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.vky.entity.PageResult;
 import com.vky.pojo.Competition;
 
