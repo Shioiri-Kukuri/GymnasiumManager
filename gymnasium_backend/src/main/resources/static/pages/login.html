@@ -6,6 +6,10 @@
     <title>海大体育馆管理系统 - 登录</title>
     <link rel="stylesheet" href="../plugins/elementui/index.css">
     <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/axios-0.18.0.js"></script>
+
+
     <style>
         body { background-color: #f0f2f5; }
         .login-container {
@@ -24,7 +28,7 @@
     <h1 class="login-title"><img src="../img/log1.png" alt="海大体育馆管理系统" style="height:40px;"> 登录</h1>
     <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="用户名">
-            <el-input v-model="form.username"></el-input>
+            <el-input v-model="form.account"></el-input>
         </el-form-item>
         <el-form-item label="密码">
             <el-input type="password" v-model="form.password"></el-input>
@@ -35,35 +39,44 @@
     </el-form>
 </div>
 
-<!-- 引入Vue和ElementUI -->
+<!-- 脚本引入 -->
 <script src="../js/vue.js"></script>
 <script src="../plugins/elementui/index.js"></script>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<!-- login.html 的Vue实例脚本部分 -->
 <script>
     new Vue({
         el: '#loginApp',
         data: {
             form: {
-                username: '',
+                account: '',
                 password: ''
             }
         },
         methods: {
-            login() {
-                // 这里应调用后端API进行登录验证，成功后跳转到主页面
-                // 示例伪代码，实际应使用axios等发起POST请求
-                // axios.post('/api/login', this.form).then(response => {
-                //     if (response.data.success) {
-                //         // 登录成功，根据项目结构调整路径
-                //         window.location.href = 'index.html';
-                //     } else {
-                //         alert('登录失败，请重试！');
-                //     }
-                // }).catch(error => {
-                //     console.error('登录请求出错：', error);
-                // });
-                // 为了演示，这里直接提示并跳转
-                alert('登录成功！');
-                window.location.href = 'index.html'; // 假设登录成功后跳转到主页
+            async login() {
+                try {
+                    // 后端登录接口为'/user/login.do'
+                    const response = await axios.post('/user/login.do', this.form, {
+                        headers: {
+                            'Content-Type': 'application/json;charset=UTF-8' // 显式指定Content-Type
+                        }
+                    });
+
+                    if (response.data.success) {
+                        // 登录成功处理
+                        alert('登录成功！');
+                        window.location.href = 'main.html'; // 登录成功后跳转到主页面
+                    } else {
+                        // 登录失败提示
+                        alert(response.data.message || '登录失败，请重试！');
+                    }
+                } catch (error) {
+                    // 处理请求错误
+                    console.error('登录请求出错：', error);
+                    alert('登录请求出错，请检查网络或联系管理员！');
+                }
             }
         }
     });

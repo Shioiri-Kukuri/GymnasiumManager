@@ -56,11 +56,12 @@ mybatis:
 
 
 
+
 #dubbo
 dubbo:
   #设置服务器应用名称
   application:
-    name: health_service_provider
+    name: gymnasium_service_provider
   #指定注册中心
   registry:
     address: zookeeper://127.0.0.1:2181
@@ -81,3 +82,8 @@ pagehelper:
 logging:
   level:
     com.vky: debug
+mybatis-plus:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.vky.pojo,com.vky.entity
+  configuration:
+    cache-enabled: true
