@@ -173,12 +173,15 @@
             }
         },
         created() {
+            // 从localStorage获取用户名
+            this.username = localStorage.getItem('name') || null;
+            // 保持原有逻辑，通过API获取用户名，这里假设API获取的信息更准确，如有需要可进行调整
             axios.get('/user/getUsername.do')
                 .then(response => {
                     this.username = response.data.data;
                     this.isLoggedIn = true;
                 });
-        }
+        },
     });
 
     // 页面加载时调整容器宽度

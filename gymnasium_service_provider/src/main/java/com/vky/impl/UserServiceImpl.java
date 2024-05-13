@@ -15,7 +15,14 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public void findByAccountAndPassword(User user) {
-        userDao.findByAccountAndPassword(user);
+    public User findByAccountAndPassword(User user) {
+        // 用DAO返回的User实例替换这里的user
+        User foundUser = userDao.findByAccountAndPassword(user);
+        return foundUser; // 返回从数据库查询到的User对象
     }
+    @Override
+    public Integer findRoleIdByAccount(String Account) {
+        return userDao.findRoleIdByAccount(Account);
+    }
+
 }
