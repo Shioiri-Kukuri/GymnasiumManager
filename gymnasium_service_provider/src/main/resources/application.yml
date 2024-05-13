@@ -56,6 +56,7 @@ mybatis:
 
 
 
+
 #dubbo
 dubbo:
   #设置服务器应用名称
@@ -81,3 +82,8 @@ pagehelper:
 logging:
   level:
     com.vky: debug
+mybatis-plus:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.vky.pojo,com.vky.entity
+  configuration:
+    cache-enabled: true

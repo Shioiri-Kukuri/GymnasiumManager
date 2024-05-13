@@ -1,9 +1,10 @@
 package com.vky.pojo;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
-public class Competition {
+public class Competition implements Serializable {
     private Long id;
 
     private String name;
