@@ -17,7 +17,7 @@ public class CompetitionController {
     @Reference
     private CompetitionService competitionService;
 
-    //TODO 新增操作
+
     @RequestMapping("/add.do")
     public Result add(@RequestBody Competition competition){
         try {
@@ -32,7 +32,7 @@ public class CompetitionController {
 
     }
 
-    //TODO 分页查询
+
     @RequestMapping("/findPage.do")
     public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
         PageResult pageResult = competitionService.pageQuery(
@@ -54,7 +54,7 @@ public class CompetitionController {
         return new Result(false,"分页查询执行失败");
     }
 
-    //TODO 删除操作
+
     @RequestMapping("/delete.do")
     public Result delete(Integer id){
         try {
@@ -67,7 +67,7 @@ public class CompetitionController {
         return new Result(true,"删除成功");
     }
 
-    //TODO 编辑操作
+
     @RequestMapping("/edit.do")
     public Result edit(@RequestBody Competition competition){
         try {

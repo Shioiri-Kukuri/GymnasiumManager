@@ -9,7 +9,7 @@ public class Competition implements Serializable {
 
     private String name;
 
-    private Integer sort;
+    private Integer code;
 
     private Integer typeId;
 
@@ -59,16 +59,16 @@ public class Competition implements Serializable {
      * 获取
      * @return sort
      */
-    public Integer getSort() {
-        return sort;
+    public Integer getCode() {
+        return code;
     }
 
     /**
      * 设置
-     * @param sort
+     * @param code
      */
-    public void setSort(Integer sort) {
-        this.sort = sort;
+    public void setCode(Integer code) {
+        this.code = code;
     }
 
     /**

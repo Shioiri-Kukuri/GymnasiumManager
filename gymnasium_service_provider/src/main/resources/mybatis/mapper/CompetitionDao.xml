@@ -4,9 +4,9 @@
 <mapper namespace="com.vky.dao.CompetitionDao">
     <!--新增-->
     <insert id="save" parameterType="com.vky.pojo.Competition">
-        insert into c_competition(name, sort, type_id, status)
+        insert into c_competition(name, code, type_id, status)
         values
-            (#{name}, #{sort}, #{typeId}, #{status})
+            (#{name}, #{code}, #{typeId}, #{status})
     </insert>
     <update id="edit" parameterType="com.vky.pojo.Competition">
         update c_competition
@@ -14,8 +14,8 @@
             <if test="name != null">
                 name = #{name},
             </if>
-            <if test="sort != null">
-                sort = #{sort},
+            <if test="code != null">
+                code = #{code},
             </if>
             <if test="typeId != null">
                 type_id = #{typeId},
@@ -32,7 +32,7 @@
     <select id="selectByCondition" parameterType="string" resultType="com.vky.pojo.Competition">
         select * from c_competition
         <if test="queryString != null and queryString.length > 0">
-            where name like concat('%',#{queryString},'%')
+            where code like concat('%',#{queryString},'%') or name like concat('%',#{queryString},'%')
         </if>
     </select>
     <select id="getById" resultType="com.vky.pojo.Competition" parameterType="int">
