@@ -33,7 +33,7 @@
                     <el-dropdown class="avatar-container right-menu-item" trigger="click">
                         <div class="avatar-wrapper">
                             <img src="../img/user2-160x160.jpg" class="user-avatar">
-                            <!-- 展示用户名 -->
+                            <!-- 展示用户名(用户账号) -->
                             {{ username }}
                         </div>
                         <el-dropdown-menu slot="dropdown">
@@ -94,7 +94,8 @@
         el: '#app',
         data() {
             return {
-                username: null,
+                username: '',
+                account: null,
                 isLoggedIn: false,
                 menuList: [
                     {
@@ -173,14 +174,12 @@
             }
         },
         created() {
-            // 从localStorage获取用户名
-            this.username = localStorage.getItem('name') || null;
-            // 保持原有逻辑，通过API获取用户名，这里假设API获取的信息更准确，如有需要可进行调整
-            axios.get('/user/getUsername.do')
-                .then(response => {
-                    this.username = response.data.data;
-                    this.isLoggedIn = true;
-                });
+            // 直接从localStorage获取用户名并设置到account
+            this.username = localStorage.getItem('username') || '';
+            // 如果有额外需求验证用户状态或获取更多信息，可以通过API调用，但记得处理响应并更新`this.isLoggedIn`和`this.username`等状态
+            // 示例代码已移除直接API调用，因为仅展示如何从localStorage读取
+            // 简单假设有account即为已登录
+            this.isLoggedIn = Boolean(this.username);
         },
     });
 

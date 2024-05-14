@@ -40,4 +40,6 @@ public class User implements Serializable {
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
+
+
 }

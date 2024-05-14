@@ -31,7 +31,7 @@ public class UserController {
 
                 // 如果有其他用户信息需要返回，可以继续添加到resultMap中
                 resultMap.put("userId", loginUser.getAccount());
-                resultMap.put("username", loginUser.getPassword());
+                resultMap.put("username", loginUser.getName());
                 resultMap.put("roleId", loginUser.getRoleId());
 
                 // 将整个Map作为data返回
