@@ -27,8 +27,8 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public Field findById(Integer fieldId) {
-        return fieldDao.findById(fieldId);
+    public Field findById(Integer id) {
+        return fieldDao.findById(id);
     }
 
     @Override

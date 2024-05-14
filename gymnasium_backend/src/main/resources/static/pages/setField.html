@@ -81,9 +81,9 @@
                 <el-button @click="findPage()" class="dalfBut">查询</el-button>
                 <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
             </div>
-            <el-table size="small" current-row-key="fieldId" :data="dataList" stripe highlight-current-row>
+            <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                 <el-table-column type="index" align="center" label="序号"></el-table-column>
-                <el-table-column prop="fieldNo" label="场地编号" align="center"></el-table-column>
+                <el-table-column prop="fieldNo" label="场地号码" align="center"></el-table-column>
                 <el-table-column prop="fieldName" label="场地名称" align="center"></el-table-column>
                 <el-table-column prop="fieldType" label="场地类型" align="center"></el-table-column>
                 <el-table-column prop="fieldCost" label="租用费用" align="center"></el-table-column>
@@ -110,7 +110,7 @@
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
-                                <el-form label-position="right" label-width="100px">
+                                <el-form ref="dataAddForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
                                             <el-form-item label="场地编号">
@@ -152,7 +152,7 @@
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
-                                <el-form label-position="right" label-width="100px">
+                                <el-form ref="dataAddForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
                                             <el-form-item label="场地编号">
@@ -208,52 +208,42 @@
             },
             dataList: [],//列表数据
             formData: {},//表单数据
-            tableData:[],//添加表单窗口中检查组列表数据
-            checkgroupIds:[],//添加表单窗口中检查组复选框对应id
             dialogFormVisible: false,//控制添加窗口显示/隐藏
-            dialogFormVisible4Edit:false//控制编辑窗口显示/隐藏
+            dialogFormVisible4Edit:false,//控制编辑窗口显示/隐藏
+            rules: {//校验规则
+                fieldNo: [{ required: true, message: '场地号码为必填项', trigger: 'blur' }],
+                fieldCost: [{ required: true, message: '场地费用为必填项', trigger: 'blur' }]
+            }
         },
         created() {
             this.findPage();
         },
         methods: {
-            //文件上传成功后的钩子，response为服务端返回的值，file为当前上传的文件封装成的js对象
-            handleAvatarSuccess(response, file) {
-                this.imageUrl = "http://sc7vjqgn9.hn-bkt.clouddn.com/"+response.data;
-                this.$message({
-                    message: response.message,
-                    type: response.flag ? 'success' : 'error'
-                });
-                //设置模型数据（图片名称），后续提交ajax请求时会提交到后台最终保存到数据库
-                this.formData.img = response.data;
-            },
-            //上传图片之前执行
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
-                if (!isJPG) {
-                    this.$message.error('上传套餐图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传套餐图片大小不能超过 2MB!');
-                }
-                return isJPG && isLt2M;
-            },
             //添加
             handleAdd () {
-                axios.post("/field/add.do?",this.formData).
-                then((response)=> {
-                    this.dialogFormVisible = false;
-                    if(response.data.flag){
-                        this.$message({
-                            message: response.data.message,
-                            type: 'success'
+                //校验表单输入项是否合法
+                this.$refs['dataAddForm'].validate((valid) => {
+                    if (valid) {
+                        //表单数据校验通过，发送ajax请求将表单数据提交到后台
+                        axios.post("/field/add.do",this.formData).then((response)=> {
+                            //隐藏新增窗口
+                            this.dialogFormVisible = false;
+                            //判断后台返回的flag值，true表示添加操作成功，false为添加操作失败
+                            if(response.data.flag){
+                                this.$message({
+                                    message: response.data.message,
+                                    type: 'success'
+                                });
+                            }else{
+                                this.$message.error(response.data.message);
+                            }
+                        }).finally(()=> {
+                            this.findPage();
                         });
-                    }else{
-                        this.$message.error(response.data.message);
+                    } else {
+                        this.$message.error("表单数据校验失败");
+                        return false;
                     }
-                }).finally(()=> {
-                    this.findPage();
                 });
             },
             //分页查询
@@ -319,7 +309,7 @@
             handleUpdate(row) {
                 this.dialogFormVisible4Edit = true;
                 //发送请求获取检查项信息
-                axios.get("/field/findById.do?fieldId=" + row.fieldId).then((res)=>{
+                axios.get("/field/findById.do?id=" + row.id).then((res)=>{
                     if(res.data.flag){
                         //设置编辑窗口属性，dialogFormVisible4Edit为true表示显示
                         this.dialogFormVisible4Edit = true;
@@ -330,7 +320,37 @@
                     }
                 });
             },
+            //编辑
+            handleEdit() {
+                //表单校验
+                this.$refs['dataEditForm'].validate((valid)=>{
+                    if(valid){
+                        //表单校验通过，发送请求
+                        axios.post("/field/edit.do",this.formData).then((response)=> {
+                            //隐藏编辑窗口
+                            this.dialogFormVisible4Edit = false;
+                            if(response.data.flag){
+                                //编辑成功，弹出成功提示信息
+                                this.$message({
+                                    message: response.data.message,
+                                    type: 'success'
+                                });
+                            }else{
+                                //编辑失败，弹出错误提示信息
+                                this.$message.error(response.data.message);
+                            }
+                        }).finally(()=> {
+                            //重新发送请求查询分页数据
+                            this.findPage();
 
+                        });
+                    }else{
+                        //表单校验失败
+                        this.$message.error("表单数据校验失败");
+                        return false;
+                    }
+                });
+            },
             //权限不足提示
             showMessage(r){
                 if(r == 'Error: Request failed with status code 403'){

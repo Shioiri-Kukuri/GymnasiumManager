@@ -8,7 +8,7 @@ public interface FieldService {
 
     void add(Field field);
 
-    Field findById(Integer fieldId);
+    Field findById(Integer id);
 
     void edit(Field field);
 }

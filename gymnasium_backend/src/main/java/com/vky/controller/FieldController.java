@@ -40,8 +40,8 @@ public class FieldController {
 
     //根据id查询场地
     @RequestMapping("/findById.do")
-    public Result findById(Integer fieldId){
-        Field field = fieldService.findById(fieldId);
+    public Result findById(Integer id){
+        Field field = fieldService.findById(id);
         if(field != null){
             Result result = new Result(true,"根据id查询成功");
             result.setData(field);
