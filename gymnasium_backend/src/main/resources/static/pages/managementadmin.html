@@ -16,11 +16,11 @@
     <body class="hold-transition">
         <div id="app">
             <div class="content-header">
-                <h1>预约管理<small>检查项管理</small></h1>
+                <h1>超级用户功能<small>管理管理员</small></h1>
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
                     <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                    <el-breadcrumb-item>预约管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>检查项管理</el-breadcrumb-item>
+                    <el-breadcrumb-item>权限功能</el-breadcrumb-item>
+                    <el-breadcrumb-item>超级用户功能</el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
             <div class="app-container">
@@ -60,7 +60,7 @@
                     </div>
                     <!-- 新增标签弹层 -->
                     <div class="add-form">
-                        <el-dialog title="新增检查项" :visible.sync="dialogFormVisible">
+                        <el-dialog title="新增管理员" :visible.sync="dialogFormVisible">
                             <el-form ref="dataAddForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                                 <el-row>
                                     <el-col :span="12">
