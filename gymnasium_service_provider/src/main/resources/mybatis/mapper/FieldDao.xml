@@ -28,6 +28,6 @@
         update f_field
         set field_no=#{fieldNo},field_name = #{fieldName}
            ,field_type = #{fieldType},field_cost = #{fieldCost}
-        where field_id = #{fieldId}
+        where id = #{id}
     </update>
 </mapper>
