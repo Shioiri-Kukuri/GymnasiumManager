@@ -36,4 +36,9 @@ public class FieldServiceImpl implements FieldService {
         fieldDao.edit(field);
     }
 
+    @Override
+    public void delete(Integer id) {
+        fieldDao.delete(id);
+    }
+
 }

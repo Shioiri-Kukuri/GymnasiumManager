@@ -30,4 +30,9 @@
            ,field_type = #{fieldType},field_cost = #{fieldCost}
         where id = #{id}
     </update>
+
+<!--    删除场地-->
+    <delete id="delete" parameterType="int">
+            delete from f_field where id = #{id}
+    </delete>
 </mapper>

@@ -110,12 +110,12 @@
                     <el-form ref="dataAddForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                         <el-row>
                             <el-col :span="12">
-                                <el-form-item label="场地编号">
+                                <el-form-item label="场地编号" prop="fieldNo">
                                     <el-input v-model="formData.fieldNo"/>
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="场地名称">
+                                <el-form-item label="场地名称" >
                                     <el-input v-model="formData.fieldName"/>
                                 </el-form-item>
                             </el-col>
@@ -127,7 +127,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="租用费用">
+                                <el-form-item label="租用费用" prop="fieldCost">
                                     <el-input v-model="formData.fieldCost"/>
                                 </el-form-item>
                             </el-col>
@@ -146,7 +146,7 @@
                     <el-form ref="dataEditForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                         <el-row>
                             <el-col :span="12">
-                                <el-form-item label="场地编号">
+                                <el-form-item label="场地编号" prop="fieldNo">
                                     <el-input v-model="formData.fieldNo"/>
                                 </el-form-item>
                             </el-col>
@@ -163,7 +163,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :span="12">
-                                <el-form-item label="场地费用">
+                                <el-form-item label="场地费用" prop="fieldCost">
                                     <el-input v-model="formData.fieldCost"/>
                                 </el-form-item>
                             </el-col>
@@ -273,7 +273,7 @@
                     type: 'warning'
                 }).then(()=>{
                     //点击确定按钮执行此代码
-                    axios.get("/setmeal/delete.do?id=" + row.id).then((res)=> {
+                    axios.get("/field/delete.do?id=" + row.id).then((res)=> {
                         if(!res.data.flag){
                             //删除失败
                             this.$message.error(res.data.message);

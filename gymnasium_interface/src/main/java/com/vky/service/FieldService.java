@@ -11,4 +11,6 @@ public interface FieldService {
     Field findById(Integer id);
 
     void edit(Field field);
+
+    void delete(Integer id);
 }

@@ -59,4 +59,17 @@ public class FieldController {
         }
         return new Result(true,"修改成功");
     }
+
+    /**
+     * 删除场地
+     */
+    @RequestMapping("/delete.do")
+    public Result delete(Integer id){
+        try{
+            fieldService.delete(id);
+        }catch(Exception e){
+            return new Result(false,"删除失败");
+        }
+        return new Result(true,"删除成功");
+    }
 }
