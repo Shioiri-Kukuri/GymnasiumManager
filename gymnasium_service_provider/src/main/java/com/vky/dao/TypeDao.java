@@ -3,18 +3,23 @@ package com.vky.dao;
 import com.github.pagehelper.Page;
 import com.vky.annotation.AutoFill;
 import com.vky.enumeration.OperationType;
-import com.vky.pojo.Competition;
+import com.vky.pojo.Type;
 
-public interface CompetitionDao{
+import java.util.List;
+
+public interface TypeDao {
+
     @AutoFill(value = OperationType.INSERT)
-    void save(Competition competition);
+    void add(Type type);
 
-    Page<Competition> selectByCondition(String queryString);
+    List<Type> findAll();
 
-    Competition getById(Integer id);
+    Page<Type> selectByCondition(String queryString);
 
     void deleteById(Integer id);
 
     @AutoFill(value = OperationType.UPDATE)
-    void edit(Competition competition);
+    void edit(Type type);
+
+    Type getById(Integer id);
 }

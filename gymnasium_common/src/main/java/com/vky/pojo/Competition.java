@@ -15,6 +15,7 @@ public class Competition implements Serializable {
 
     private Integer status;
 
+    private String description;
     private Long createBy;
 
     private LocalDateTime createTime;
@@ -25,6 +26,7 @@ public class Competition implements Serializable {
 
     /**
      * 获取
+     *
      * @return id
      */
     public Long getId() {
@@ -33,6 +35,7 @@ public class Competition implements Serializable {
 
     /**
      * 设置
+     *
      * @param id
      */
     public void setId(Long id) {
@@ -41,6 +44,7 @@ public class Competition implements Serializable {
 
     /**
      * 获取
+     *
      * @return name
      */
     public String getName() {
@@ -49,6 +53,7 @@ public class Competition implements Serializable {
 
     /**
      * 设置
+     *
      * @param name
      */
     public void setName(String name) {
@@ -57,7 +62,8 @@ public class Competition implements Serializable {
 
     /**
      * 获取
-     * @return sort
+     *
+     * @return code
      */
     public Integer getCode() {
         return code;
@@ -65,6 +71,7 @@ public class Competition implements Serializable {
 
     /**
      * 设置
+     *
      * @param code
      */
     public void setCode(Integer code) {
@@ -73,6 +80,7 @@ public class Competition implements Serializable {
 
     /**
      * 获取
+     *
      * @return typeId
      */
     public Integer getTypeId() {
@@ -81,6 +89,7 @@ public class Competition implements Serializable {
 
     /**
      * 设置
+     *
      * @param typeId
      */
     public void setTypeId(Integer typeId) {
@@ -89,6 +98,7 @@ public class Competition implements Serializable {
 
     /**
      * 获取
+     *
      * @return status
      */
     public Integer getStatus() {
@@ -97,6 +107,7 @@ public class Competition implements Serializable {
 
     /**
      * 设置
+     *
      * @param status
      */
     public void setStatus(Integer status) {
@@ -105,6 +116,25 @@ public class Competition implements Serializable {
 
     /**
      * 获取
+     *
+     * @return description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * 设置
+     *
+     * @param description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * 获取
+     *
      * @return createBy
      */
     public Long getCreateBy() {
@@ -113,6 +143,7 @@ public class Competition implements Serializable {
 
     /**
      * 设置
+     *
      * @param createBy
      */
     public void setCreateBy(Long createBy) {
@@ -121,6 +152,7 @@ public class Competition implements Serializable {
 
     /**
      * 获取
+     *
      * @return createTime
      */
     public LocalDateTime getCreateTime() {
@@ -129,6 +161,7 @@ public class Competition implements Serializable {
 
     /**
      * 设置
+     *
      * @param createTime
      */
     public void setCreateTime(LocalDateTime createTime) {
@@ -137,6 +170,7 @@ public class Competition implements Serializable {
 
     /**
      * 获取
+     *
      * @return updateBy
      */
     public Long getUpdateBy() {
@@ -145,6 +179,7 @@ public class Competition implements Serializable {
 
     /**
      * 设置
+     *
      * @param updateBy
      */
     public void setUpdateBy(Long updateBy) {
@@ -153,6 +188,7 @@ public class Competition implements Serializable {
 
     /**
      * 获取
+     *
      * @return updateTime
      */
     public LocalDateTime getUpdateTime() {
@@ -161,11 +197,11 @@ public class Competition implements Serializable {
 
     /**
      * 设置
+     *
      * @param updateTime
      */
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
-
 
 }
