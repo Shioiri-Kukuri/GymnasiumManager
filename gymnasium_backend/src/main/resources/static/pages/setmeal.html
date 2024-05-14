@@ -360,7 +360,7 @@
                 // 弹出编辑窗口
                 handleUpdate(row) {
                     this.dialogFormVisible4Edit = true;
-                    //发送请求获取检查项信息
+                    //发送请求获取基本信息
                     axios.get("/setmeal/findById.do?id=" + row.id).then((res)=>{
                         if(res.data.flag){
                             //设置编辑窗口属性，dialogFormVisible4Edit为true表示显示

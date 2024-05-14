@@ -81,7 +81,7 @@
                 <el-button @click="findPage()" class="dalfBut">查询</el-button>
                 <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
             </div>
-            <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
+            <el-table size="small" current-row-key="fieldId" :data="dataList" stripe highlight-current-row>
                 <el-table-column type="index" align="center" label="序号"></el-table-column>
                 <el-table-column prop="fieldNo" label="场地编号" align="center"></el-table-column>
                 <el-table-column prop="fieldName" label="场地名称" align="center"></el-table-column>
@@ -148,107 +148,36 @@
 
             <!-- 编辑标签弹层 -->
             <div class="add-form">
-                <el-dialog title="编辑套餐" :visible.sync="dialogFormVisible4Edit">
+                <el-dialog title="编辑场地" :visible.sync="dialogFormVisible4Edit">
                     <template>
                         <el-tabs v-model="activeName" type="card">
                             <el-tab-pane label="基本信息" name="first">
                                 <el-form label-position="right" label-width="100px">
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="编码">
-                                                <el-input v-model="formData.code"/>
+                                            <el-form-item label="场地编号">
+                                                <el-input v-model="formData.fieldNo"/>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-form-item label="名称">
-                                                <el-input v-model="formData.name"/>
+                                            <el-form-item label="场地名称">
+                                                <el-input v-model="formData.fieldName"/>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
                                     <el-row>
                                         <el-col :span="12">
-                                            <el-form-item label="适用性别">
-                                                <el-select v-model="formData.sex">
-                                                    <el-option label="不限" value="0"></el-option>
-                                                    <el-option label="男" value="1"></el-option>
-                                                    <el-option label="女" value="2"></el-option>
-                                                </el-select>
+                                            <el-form-item label="场地类型">
+                                                <el-input v-model="formData.fieldType"/>
                                             </el-form-item>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-form-item label="助记码">
-                                                <el-input v-model="formData.helpCode"/>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="12">
-                                            <el-form-item label="套餐价格">
-                                                <el-input v-model="formData.price"/>
-                                            </el-form-item>
-                                        </el-col>
-                                        <el-col :span="12">
-                                            <el-form-item label="适用年龄">
-                                                <el-input v-model="formData.age"/>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="24">
-                                            <el-form-item label="上传图片">
-                                                <el-upload
-                                                        class="avatar-uploader"
-                                                        action="/setmeal/upload.do"
-                                                        :auto-upload="autoUpload"
-                                                        name="imgFile"
-                                                        :show-file-list="false"
-                                                        :on-success="handleAvatarSuccess"
-                                                        :before-upload="beforeAvatarUpload">
-                                                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                                                </el-upload>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="24">
-                                            <el-form-item label="说明">
-                                                <el-input v-model="formData.remark" type="textarea"></el-input>
-                                            </el-form-item>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row>
-                                        <el-col :span="24">
-                                            <el-form-item label="注意事项">
-                                                <el-input v-model="formData.attention" type="textarea"></el-input>
+                                            <el-form-item label="场地费用">
+                                                <el-input v-model="formData.fieldCost"/>
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
                                 </el-form>
-                            </el-tab-pane>
-                            <el-tab-pane label="检查组信息" name="second">
-                                <div class="checkScrol">
-                                    <table class="datatable">
-                                        <thead>
-                                        <tr>
-                                            <th>选择</th>
-                                            <th>项目编码</th>
-                                            <th>项目名称</th>
-                                            <th>项目说明</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr v-for="c in tableData">
-                                            <td>
-                                                <input :id="c.id" v-model="checkgroupIds" type="checkbox" :value="c.id">
-                                            </td>
-                                            <td><label :for="c.id">{{c.code}}</label></td>
-                                            <td><label :for="c.id">{{c.name}}</label></td>
-                                            <td><label :for="c.id">{{c.remark}}</label></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
                             </el-tab-pane>
                         </el-tabs>
                     </template>
@@ -281,7 +210,8 @@
             formData: {},//表单数据
             tableData:[],//添加表单窗口中检查组列表数据
             checkgroupIds:[],//添加表单窗口中检查组复选框对应id
-            dialogFormVisible: false//控制添加窗口显示/隐藏
+            dialogFormVisible: false,//控制添加窗口显示/隐藏
+            dialogFormVisible4Edit:false//控制编辑窗口显示/隐藏
         },
         created() {
             this.findPage();
@@ -389,7 +319,7 @@
             handleUpdate(row) {
                 this.dialogFormVisible4Edit = true;
                 //发送请求获取检查项信息
-                axios.get("/setmeal/findById.do?id=" + row.id).then((res)=>{
+                axios.get("/field/findById.do?fieldId=" + row.fieldId).then((res)=>{
                     if(res.data.flag){
                         //设置编辑窗口属性，dialogFormVisible4Edit为true表示显示
                         this.dialogFormVisible4Edit = true;

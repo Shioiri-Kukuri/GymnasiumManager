@@ -3,7 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.vky.dao.FieldDao">
 
-<!--    分页查询-->
+
+    <!--    分页查询-->
     <select id="selectByCondition" parameterType="string" resultType="com.vky.pojo.Field">
         select * from f_field
         <if test="value != null and value.length > 0">
@@ -18,7 +19,15 @@
     </insert>
     
 <!--    根据id查询-->
-    <select id="findByNo" parameterType="int" resultType="com.vky.pojo.Field">
-        select * from f_field where field_no = #{fieldNo}
+    <select id="findById" parameterType="int" resultType="com.vky.pojo.Field">
+        select * from f_field where field_id = #{fieldId}
     </select>
+
+<!--    修改场地-->
+    <update id="edit" parameterType="com.vky.pojo.Field">
+        update f_field
+        set field_no=#{fieldNo},field_name = #{fieldName}
+           ,field_type = #{fieldType},field_cost = #{fieldCost}
+        where field_id = #{fieldId}
+    </update>
 </mapper>

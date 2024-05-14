@@ -27,9 +27,13 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public Field findByNo(Integer fieldNo) {
-        System.out.println("传进来的fieldNo是"+fieldNo);
-        return fieldDao.findByNo(fieldNo);
+    public Field findById(Integer fieldId) {
+        return fieldDao.findById(fieldId);
+    }
+
+    @Override
+    public void edit(Field field) {
+        fieldDao.edit(field);
     }
 
 }

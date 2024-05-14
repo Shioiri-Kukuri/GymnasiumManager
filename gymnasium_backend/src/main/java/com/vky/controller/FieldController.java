@@ -39,16 +39,24 @@ public class FieldController {
     }
 
     //根据id查询场地
-    @RequestMapping("/findByNo.do")
-    public Result findByNo(Integer fieldNo){
-        System.out.println("传进来的fieldNo是"+fieldNo);
-        System.out.println("fieldService: " + fieldService);
-        Field field = fieldService.findByNo(fieldNo);
+    @RequestMapping("/findById.do")
+    public Result findById(Integer fieldId){
+        Field field = fieldService.findById(fieldId);
         if(field != null){
             Result result = new Result(true,"根据id查询成功");
             result.setData(field);
             return result;
         }
         return new Result(false,"根据id查询失败");
+    }
+
+    @RequestMapping("/edit.do")
+    public Result edit(@RequestBody Field field){
+        try{
+            fieldService.edit(field);
+        }catch(Exception e){
+            return new Result(false,"修改失败");
+        }
+        return new Result(true,"修改成功");
     }
 }
