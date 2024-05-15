@@ -77,7 +77,7 @@
                                 <!-- v-for循环 每一次循环用<li>标签创建一天 -->
                                 <li v-for="dayobject in days">
                                     <template>
-                                        <!-- 非当前月份 -->
+                                        <!-- 非当前月份，getMonth()索引是从0开始的 -->
                                         <div class="other-month" v-if="dayobject.day.getMonth()+1 != currentMonth">
                                             {{ dayobject.day.getDate() }}
                                         </div>
