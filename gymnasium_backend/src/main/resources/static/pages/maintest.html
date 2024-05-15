@@ -41,8 +41,9 @@
                                     v-for="(action, index) in loginOrProfileActions"
                                     :key="index"
                                     :divided="index !== 0"
+                                    @click.native="action.title === '切换用户' ? switchUser() : logout()"
                             >
-                                <a :href="action.linkUrl" target="_self" >{{ action.title }}</a>
+                                {{ action.title }}
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -181,9 +182,9 @@
             loginOrProfileActions() {
                 return this.isLoggedIn
                     ? [
-                        { title: '登出', linkUrl: 'login.html' },
+                        { title: '切换用户', linkUrl: 'main.html' },
                     ]
-                    : [{ title: '切换用户', linkUrl: 'login.html' }];
+                    : [{ title: '登录', linkUrl: 'login.html' }];
             }
         },
         created() {
@@ -195,7 +196,23 @@
             // 简单假设有account即为已登录
             this.isLoggedIn = Boolean(this.username);
         },
-
+        methods: {
+            switchUser() {
+                // 切换用户逻辑，与之前讨论一致
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
+                this.username = '';
+                window.location.href = 'main.html';
+            },
+            logout() {
+                // 如果需要特定的登出处理，可以在这里添加
+                // 例如，发送登出请求给服务器等
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
+                this.username = '';
+                window.location.href = 'login.html'; // 或其他登出后的重定向页面
+            }
+        }
     });
 
     // 页面加载时调整容器宽度
