@@ -11,4 +11,38 @@
     <select id="findRoleIdByAccount" resultType="com.vky.pojo.User">
         SELECT role_id FROM u_user WHERE account = #{account}
     </select>
+
+    <!-- 查询用户通过账号 -->
+    <select id="findByAccount" resultType="com.vky.pojo.User">
+        SELECT * FROM u_user WHERE account = #{account}
+    </select>
+
+    <!-- 修改用户信息 -->
+    <update id="edit" parameterType = "com.vky.pojo.User">
+        UPDATE u_user SET name = #{name},password = #{password},role_id = #{roleId} WHERE account = #{account}
+    </update>
+
+    <!-- 添加用户 -->
+    <insert id = "add" parameterType="com.vky.pojo.User">
+            INSERT INTO u_user(account,password,name,role_id)
+            VALUES(#{account},#{password},#{name},#{roleId})
+    </insert>
+
+    <!-- 分页查询用户 -->
+    <select id="pageQuery" resultType="com.vky.pojo.User">
+        SELECT * FROM u_user
+        <if test="queryString != null and queryString.length > 0">
+            WHERE name LIKE concat('%',#{queryString},'%')
+        </if>
+        LIMIT
+        #{currentPage},#{pageSize}
+    </select>
+
+
+    <select id="selectByCondition" resultType="com.vky.pojo.User">
+        SELECT * FROM u_user
+        <if test="value != null and value.length > 0">
+            WHERE name LIKE concat('%',#{value},'%')
+        </if>
+    </select>
 </mapper>

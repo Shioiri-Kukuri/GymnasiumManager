@@ -1,6 +1,8 @@
 package com.vky.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.vky.entity.PageResult;
+import com.vky.entity.QueryPageBean;
 import com.vky.entity.Result;
 import com.vky.pojo.User;
 import com.vky.service.UserService;
@@ -45,6 +47,7 @@ public class UserController {
     }
 
 
+
     @GetMapping("/getUserRole.do")
     public Result getUserRole(@RequestHeader("Authorization") String token) { // 假设JWT Token在Authorization头中传递
         try {
@@ -64,6 +67,58 @@ public class UserController {
         } catch (Exception e) {
             return new Result(false, "获取用户角色失败：" + e.getMessage());
         }
+    }
+
+    @RequestMapping("/adduser.do")
+    public Result adduser(@RequestBody User user){
+        try{
+            user.setRoleId(1);
+            userService.add(user);
+        }catch(Exception e){
+            return new Result(false,"添加失败");
+        }
+        return new Result(true,"添加成功");
+    }
+
+    @RequestMapping("/addmentadmin.do")
+    public Result addmentadmin(@RequestBody User user){
+        try{
+            userService.add(user);
+        }catch(Exception e){
+            return new Result(false,"添加失败");
+        }
+        return new Result(true,"添加成功");
+    }
+
+    @RequestMapping("/edit.do")
+    public Result edit(@RequestBody User user){
+        try{
+            userService.edit(user);
+        }catch(Exception e){
+            return new Result(false,"修改失败");
+        }
+        return new Result(true,"修改成功");
+    }
+
+
+    @RequestMapping("/findByAccount.do")
+    public Result findByAccount(Integer account){
+        try{
+            User user = userService.findByAccount(account);
+            return new Result(true,"查询成功",user);
+        }catch(Exception e){
+            return new Result(false,"查询失败");
+        }
+    }
+
+    @RequestMapping("/findPage.do")
+    public PageResult findPage(@RequestBody QueryPageBean queryPageBean){
+        PageResult pageResult = userService.pageQuery(
+                queryPageBean.getCurrentPage(),
+                queryPageBean.getPageSize(),
+                queryPageBean.getQueryString()
+        );
+        return pageResult ;
     }
 }
 
