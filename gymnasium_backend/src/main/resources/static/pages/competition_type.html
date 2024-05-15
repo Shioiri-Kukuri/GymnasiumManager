@@ -28,7 +28,7 @@
         <div class="box">
             <div class="filter-container">
                 <el-input placeholder="类型名称" v-model="pagination.queryString" style="width: 200px;"
-                          class="filter-item"></el-input>
+                @keyup.enter.native ="findPage()" class="filter-item"></el-input>
                 <el-button @click="findPage()" class="dalfBut">查询</el-button>
                 <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
             </div>

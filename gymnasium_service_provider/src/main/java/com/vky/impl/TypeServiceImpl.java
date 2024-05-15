@@ -20,6 +20,10 @@ public class TypeServiceImpl implements TypeService {
     private TypeDao typeDao;
     @Override
     public void save(Type type) {
+        List<Type> typeList = typeDao.isExist(type.getName());
+        if (typeList != null && typeList.size() > 0){
+            throw new RuntimeException("该类型已存在");
+        }
         typeDao.add(type);
     }
 

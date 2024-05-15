@@ -22,4 +22,6 @@ public interface TypeDao {
     void edit(Type type);
 
     Type getById(Integer id);
+
+    List<Type> isExist(String name);
 }

@@ -44,4 +44,10 @@
     <select id="getById" resultType="com.vky.pojo.Type" parameterType="int">
         select * from c_type where id = #{id}
     </select>
+    <select id="isExist" resultType="com.vky.pojo.Type">
+        select * from c_type
+        <if test="name != null and name.length > 0">
+            where name = #{name}
+        </if>
+    </select>
 </mapper>

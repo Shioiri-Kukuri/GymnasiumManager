@@ -11,7 +11,7 @@ public class Competition implements Serializable {
 
     private Integer code;
 
-    private Integer typeId;
+    private String typeName;
 
     private Integer status;
 
@@ -81,19 +81,19 @@ public class Competition implements Serializable {
     /**
      * 获取
      *
-     * @return typeId
+     * @return typeName
      */
-    public Integer getTypeId() {
-        return typeId;
+    public String getTypeName() {
+        return typeName;
     }
 
     /**
      * 设置
      *
-     * @param typeId
+     * @param typeName
      */
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     /**
