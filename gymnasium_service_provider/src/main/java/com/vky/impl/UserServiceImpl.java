@@ -52,4 +52,9 @@ public class UserServiceImpl implements UserService {
         Page<User> page = userDao.selectByCondition(queryString);
         return new PageResult(page.getTotal(), page.getResult());
     }
+
+    @Override
+    public void delete(Integer account) {
+        userDao.delete(account);
+    }
 }

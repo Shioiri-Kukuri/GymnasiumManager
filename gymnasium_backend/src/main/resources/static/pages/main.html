@@ -185,8 +185,7 @@
             loginOrProfileActions() {
                 return this.isLoggedIn
                     ? [
-                        { title: '修改密码', linkUrl: '#' },
-                        { title: '退出', action: this.logout }
+                        { title: '退出', action: this.logout },
                     ]
                     : [{ title: '登录', linkUrl: 'login.html' }];
             }

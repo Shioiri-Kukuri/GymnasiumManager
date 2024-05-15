@@ -120,6 +120,16 @@ public class UserController {
         );
         return pageResult ;
     }
+
+    @RequestMapping("/delete.do")
+    public Result delete(Integer account){
+        try{
+            userService.delete(account);
+        }catch(Exception e){
+            return new Result(false,"删除失败");
+        }
+        return new Result(true,"删除成功");
+    }
 }
 
 

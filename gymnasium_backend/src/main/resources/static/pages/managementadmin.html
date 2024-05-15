@@ -36,7 +36,7 @@
                         <el-table-column prop="name" label="管理员昵称" align="center"></el-table-column>
                         <el-table-column label="权限" align="center">
                             <template slot-scope="scope">
-                                <span>{{ scope.row.sex == '1' ? '普通用户' : scope.row.sex == '2' ? '管理员' : '超级管理员'}}</span>
+                                <span>{{ scope.row.roleId == '1' ? '普通用户' : scope.row.roleId == '2' ? '管理员' : '超级管理员'}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column label="操作" align="center">
@@ -277,10 +277,10 @@
                         type: 'warning'
                     }).then(()=>{
                         //点击确定按钮执行此代码
-                        axios.get("/user/delete.do?id=" + row.id).then((res)=> {
+                        axios.get(`/user/delete.do?account=${row.account}`).then((res)=> {
                             if(!res.data.flag){
-                        //删除失败
-                        this.$message.error(res.data.message);
+                            //删除失败
+                            this.$message.error(res.data.message);
                     }else{
                         //删除成功
                         this.$message({

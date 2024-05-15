@@ -13,9 +13,10 @@ public interface UserDao {
 
     void edit(User user);
 
-    User findByAccount(Integer account);
+    User findByAccount(Integer Account);
     void add(User user);
 
 
     PageResult pageQuery(Integer currentPage, Integer pageSize, String queryString);
+    void delete(Integer account);
 }

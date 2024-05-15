@@ -39,10 +39,16 @@
     </select>
 
 
+    <!-- 条件查询用户 -->
     <select id="selectByCondition" resultType="com.vky.pojo.User">
         SELECT * FROM u_user
         <if test="value != null and value.length > 0">
             WHERE name LIKE concat('%',#{value},'%')
         </if>
     </select>
+
+    <!-- 删除用户 -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM u_user WHERE account = #{account}
+    </delete>
 </mapper>
