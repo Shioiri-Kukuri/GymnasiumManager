@@ -7,12 +7,12 @@
         SELECT * FROM u_user WHERE account = #{account} AND password = #{password}
     </select>
 
-    <!-- 查询用户通过账号 -->
+    <!-- 通过账号查询用户权限 -->
     <select id="findRoleIdByAccount" resultType="com.vky.pojo.User">
         SELECT role_id FROM u_user WHERE account = #{account}
     </select>
 
-    <!-- 查询用户通过账号 -->
+    <!-- 通过账号查询用户 -->
     <select id="findByAccount" resultType="com.vky.pojo.User">
         SELECT * FROM u_user WHERE account = #{account}
     </select>

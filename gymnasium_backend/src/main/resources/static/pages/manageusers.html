@@ -134,15 +134,11 @@
                 rules: {
                     account: [
                         { required: true, message: '用户账号为必填项', trigger: 'blur' },
-                        { min: 12, max: 12, message: '账号长度必须为12位', trigger: 'blur' }
                     ],
                     password: [
                         { required: true, message: '用户密码为必填项', trigger: 'blur' },
                         { min: 1, max: 18, message: '密码长度不能超过18位', trigger: 'blur' }
                     ],
-                    name: [
-                        { min: 1, max: 8, message: '用户名长度不能超过8位', trigger: 'blur' },
-                    ]
                 }
             },
             //钩子函数，VUE对象初始化完成后自动执行

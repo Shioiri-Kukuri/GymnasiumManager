@@ -81,4 +81,17 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
+
+    public static boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(JwtUtil.JWT_KEY).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean invalidateToken(String token) {
+        return !validateToken(token);
+    }
 }
