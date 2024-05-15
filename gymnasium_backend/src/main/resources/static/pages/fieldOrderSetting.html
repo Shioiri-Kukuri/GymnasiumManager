@@ -67,11 +67,11 @@
 <body class="hold-transition">
 <div id="app">
     <div class="content-header">
-        <h1>场地管理<small>场地信息管理</small></h1>
+        <h1>场地管理<small>场地预约管理</small></h1>
         <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>场地管理</el-breadcrumb-item>
-            <el-breadcrumb-item>场地信息管理</el-breadcrumb-item>
+            <el-breadcrumb-item>场地预约管理</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
     <div class="app-container">
@@ -83,13 +83,17 @@
             </div>
             <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                 <el-table-column type="index" align="center" label="序号"></el-table-column>
-                <el-table-column prop="fieldNo" label="场地号码" align="center"></el-table-column>
-                <el-table-column prop="fieldName" label="场地名称" align="center"></el-table-column>
-                <el-table-column prop="fieldType" label="场地类型" align="center"></el-table-column>
-                <el-table-column prop="fieldCost" label="租用费用" align="center"></el-table-column>
+                <el-table-column prop="fieldId" label="场地号码" align="center"></el-table-column>
+                <el-table-column prop="account" label="用户账号" align="center"></el-table-column>
+                <el-table-column prop="name" label="用户姓名" align="center"></el-table-column>
+                <el-table-column prop="timeStart" label="开始时间" align="center"></el-table-column>
+                <el-table-column prop="timeEnd" label="结束时间" align="center"></el-table-column>
+                <el-table-column prop="appointmentStatus" label="审批状态" align="center"></el-table-column>
+                <el-table-column prop="appointmentComment" label="审批意见" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" @click="handleUpdate(scope.row)" >编辑</el-button>
+                        <el-button type="primary" size="mini" @click="viewAppointment(scope.row)" >审批</el-button>
                         <el-button  type="danger" size="mini" @click="handleDelete(scope.row)" >删除</el-button>
                     </template>
                 </el-table-column>
@@ -106,7 +110,7 @@
             </div>
             <!-- 新增标签弹层 -->
             <div class="add-form">
-                <el-dialog title="新增场地" :visible.sync="dialogFormVisible">
+                <el-dialog title="新增预约" :visible.sync="dialogFormVisible">
                     <el-form ref="dataAddForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                         <el-row>
                             <el-col :span="12">
@@ -142,7 +146,7 @@
 
             <!-- 编辑标签弹层 -->
             <div class="add-form">
-                <el-dialog title="编辑场地" :visible.sync="dialogFormVisible4Edit">
+                <el-dialog title="编辑预约" :visible.sync="dialogFormVisible4Edit">
                     <el-form ref="dataEditForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                         <el-row>
                             <el-col :span="12">
@@ -176,6 +180,29 @@
                 </el-dialog>
             </div>
 
+            <!-- 审批标签弹层 -->
+            <div class="add-form">
+                <el-dialog title="审批" :visible.sync="dialogFormVisibleAppointment">
+                    <el-form ref="dataAppointmentForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
+                        <el-row>
+                            <el-col :span="12">
+                                <el-form-item label="用户账号" prop="fieldNo">
+                                    <el-input v-model="formData.account"/>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="用户姓名">
+                                    <el-input v-model="formData.name"/>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="dialogFormVisibleAppointment = false">取消</el-button>
+                        <el-button type="primary" @click="handleApproval()">确定</el-button>
+                    </div>
+                </el-dialog>
+            </div>
         </div>
     </div>
 </div>
@@ -198,6 +225,7 @@
             formData: {},//表单数据
             dialogFormVisible: false,//控制添加窗口显示/隐藏
             dialogFormVisible4Edit:false,//控制编辑窗口显示/隐藏
+            dialogFormVisibleAppointment:false,//控制审批编辑窗口显示/隐藏
             rules: {//校验规则
                 fieldNo: [{ required: true, message: '场地号码为必填项', trigger: 'blur' }],
                 fieldCost: [{ required: true, message: '场地费用为必填项', trigger: 'blur' }]
@@ -205,8 +233,32 @@
         },
         created() {
             this.findPage();
+            // this.findByAccount();
         },
         methods: {
+            //显示审批窗口
+            viewAppointment(row){
+                this.dialogFormVisibleAppointment = true;
+                //查询用户信息
+                axios.get("/user/findByAccount.do?account=" + row.account).then((res)=>{
+                    if(res.data.flag){
+                        //设置编辑窗口属性，dialogFormVisibleAppointment为true表示显示
+                        this.dialogFormVisibleAppointment = true;
+                        //为模型数据设置值，基于VUE双向数据绑定回显到页面
+                        this.formData = res.data.data;
+                    }else{
+                        this.$message.error("获取数据失败，请刷新当前页面");
+                    }
+                });
+            },
+            //审批通过
+            handleApproval(row){
+                //请求后台
+                axios.post("/user/findByAccount.do?account="+row.account).then((response)=> {
+                    //为模型数据赋值，基于VUE的双向绑定展示到页面
+                    this.dataList = response.data.rows;
+                });
+            },
             //添加
             handleAdd () {
                 //校验表单输入项是否合法
@@ -243,7 +295,7 @@
                     queryString:this.pagination.queryString//查询条件
                 };
                 //请求后台
-                axios.post("/field/findPage.do",param).then((response)=> {
+                axios.post("/appointment/findPage.do",param).then((response)=> {
                     //为模型数据赋值，基于VUE的双向绑定展示到页面
                     this.dataList = response.data.rows;
                     this.pagination.total = response.data.total;

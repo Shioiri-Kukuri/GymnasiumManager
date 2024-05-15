@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/field")
 public class FieldController {
@@ -50,6 +52,18 @@ public class FieldController {
         return new Result(false,"根据id查询失败");
     }
 
+//    根据空闲状态查询
+    @RequestMapping("/findByStatus")
+    public Result findByKeys(Integer status){
+        try {
+            List<Field> fieldList = fieldService.findByStatus(status);
+        }
+        catch(Exception e){
+            return new Result(false,"查询失败");
+        }
+        return new Result(true,"查询成功");
+    }
+
     @RequestMapping("/edit.do")
     public Result edit(@RequestBody Field field){
         try{
@@ -72,4 +86,5 @@ public class FieldController {
         }
         return new Result(true,"删除成功");
     }
+
 }
