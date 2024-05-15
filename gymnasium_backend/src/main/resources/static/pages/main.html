@@ -206,13 +206,7 @@
                 this.username = '游客请登录';
 
                 // 重定向到登录页
-                if (this.$router) {
-                    //login.html已被配置为Vue Router的一个路由
-                    this.$router.push('/login.html');
-                } else {
-                    // 如果没有使用Vue Router，使用传统方法跳转
-                    window.location.href = 'login.html';
-                }
+                window.location.href = 'login.html';
             }
         }
     });
