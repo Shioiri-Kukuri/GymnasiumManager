@@ -97,6 +97,7 @@
             return {
                 username: '游客请登录',
                 account: null,
+                role: null,
                 isLoggedIn: false,
                 menuList: [
                     {
@@ -185,7 +186,7 @@
                 return this.isLoggedIn
                     ? [
                         { title: '修改密码', linkUrl: '#' },
-                        { title: '退出', linkUrl: '/logout' }
+                        { title: '退出', action: this.logout }
                     ]
                     : [{ title: '登录', linkUrl: 'login.html' }];
             }
@@ -193,11 +194,26 @@
         created() {
             // 直接从localStorage获取用户名并设置到account
             this.username = localStorage.getItem('username') || '';
+            this.role = localStorage.getItem('role') || '';
             // 如果有额外需求验证用户状态或获取更多信息，可以通过API调用，但记得处理响应并更新`this.isLoggedIn`和`this.username`等状态
             // 示例代码已移除直接API调用，因为仅展示如何从localStorage读取
             // 简单假设有account即为已登录
             this.isLoggedIn = Boolean(this.username);
         },
+        methods: {
+            logout() {
+                // 清除localStorage中的用户信息和角色
+                localStorage.removeItem('username');
+                localStorage.removeItem('role');
+
+                // 设置登录状态为false
+                this.isLoggedIn = false;
+                this.username = '游客请登录';
+
+                // 重定向到登录页
+                window.location.href = 'login.html';
+            }
+        }
     });
 
     // 页面加载时调整容器宽度

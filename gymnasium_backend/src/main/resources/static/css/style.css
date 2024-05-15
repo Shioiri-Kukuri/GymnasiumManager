@@ -54,6 +54,9 @@ a {
 	color: #666;
 	border-left-color: transparent
 }
+
+
+
 .skin-purple .treeview-menu>li>a:hover {
 	color: #fff
 }
@@ -579,4 +582,10 @@ label input[type="radio"]:checked {
 .checkScrol{
 	height: 277px;
 	overflow-y:scroll; ;
+}
+
+.gray-input {
+	background-color: #7e7c7c; /* 灰色 */
+	border-color: #ddd; /* 调整边框颜色以匹配背景 */
+	cursor: not-allowed; /* 更改鼠标指针为禁止样式 */
 }

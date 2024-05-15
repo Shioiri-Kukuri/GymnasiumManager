@@ -6,7 +6,6 @@ import com.github.pagehelper.PageHelper;
 import com.vky.dao.FieldDao;
 import com.vky.entity.PageResult;
 import com.vky.pojo.Field;
-import com.vky.service.CompetitionService;
 import com.vky.service.FieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 
