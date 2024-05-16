@@ -41,7 +41,7 @@
                                     v-for="(action, index) in loginOrProfileActions"
                                     :key="index"
                                     :divided="index !== 0"
-                                    @click.native="action.title === '切换用户' ? switchUser() : logout()"
+                                    @click.native="action.title === '登出' ? switchUser() : logout()"
                             >
                                 {{ action.title }}
                             </el-dropdown-item>
@@ -54,7 +54,7 @@
             <el-aside width="200px">
                 <el-menu>
                     <el-submenu
-                            v-for="(menu, menuIndex) in menuList"
+                            v-for="(menu, menuIndex) in filteredMenu"
                             :key="menuIndex"
                             :index="menu.path"
                     >
@@ -67,7 +67,7 @@
                                 :key="childIndex"
                                 :index="child.path"
                         >
-                            <a :href="child.linkUrl" target="right">{{ child.title }}</a>
+                            <a :href="child.linkUrl" target="_blank">{{ child.title }}</a>
                         </el-menu-item>
                     </el-submenu>
                 </el-menu>
@@ -97,8 +97,17 @@
             return {
                 username: '游客请登录',
                 account: null,
-                role: null,
+                roleId: 1,
                 isLoggedIn: false,
+                filteredMenu: [
+                    {
+                        "path": "1",
+                        "title": "工作台",
+                        "icon":"fa-dashboard",
+                        "children": [
+                        ]
+                    }
+                ],
                 menuList: [
                     {
                         "path": "1",
@@ -168,10 +177,10 @@
                         ]
                     },
                     {
-                        "path": "5",     //菜单项所对应的路由路径
-                        "title": "权限功能",     //菜单项名称
+                        "path": "5",
+                        "title": "权限功能",
                         "icon":"fa-heartbeat",
-                        "children":[//是否有子菜单，若没有，则为[]
+                        "children":[
                             {
                                 "path": "/5-1",
                                 "title": "用户管理",
@@ -196,22 +205,31 @@
                         { title: '登出', linkUrl: 'main.html' },
                     ]
                     : [{ title: '登录', linkUrl: 'login.html' }];
-            }
+            },
+
         },
         created() {
+            console.log("Creating Vue instance...");
+            console.log(this.$data);
             // 直接从localStorage获取用户名并设置到account
             this.username = localStorage.getItem('username') || '';
-            this.role = localStorage.getItem('role') || '';
-            // 如果有额外需求验证用户状态或获取更多信息，可以通过API调用，但记得处理响应并更新`this.isLoggedIn`和`this.username`等状态
-            // 示例代码已移除直接API调用，因为仅展示如何从localStorage读取
+            this.account = localStorage.getItem('account') || '';
+            this.roleId = localStorage.getItem('roleId') || '0';
+
+            // 根据roleId过滤菜单
+            this.filterMenuByRoleId(this.roleId);
+            console.log(`roleId from localStorage: ${this.roleId}`);
+
             // 简单假设有account即为已登录
             this.isLoggedIn = Boolean(this.username);
+            console.log(`isLoggedIn set to: ${this.isLoggedIn}`);
         },
         methods: {
             switchUser() {
                 // 切换用户逻辑，与之前讨论一致
                 localStorage.removeItem('token');
                 localStorage.removeItem('username');
+                localStorage.removeItem('roleId');
                 this.username = '';
                 window.location.href = 'main.html';
             },
@@ -220,8 +238,48 @@
                 // 例如，发送登出请求给服务器等
                 localStorage.removeItem('token');
                 localStorage.removeItem('username');
+                localStorage.removeItem('roleId');
                 this.username = '';
                 window.location.href = 'login.html'; // 或其他登出后的重定向页面
+            },
+            // 根据roleId过滤菜单
+            filterMenuByRoleId(roleId) {
+                let filteredMenu;
+
+                console.log("Start filtering, menuList:", this.menuList);
+                console.log(`Filtering menu by roleId: ${roleId}`);
+                roleId = parseInt(roleId, 10);
+                console.log(typeof roleId)
+                switch (roleId) {
+                    case 0: // roleId为0时，允许访问路径为'1', '2', '3'的菜单项
+                        filteredMenu = this.menuList.filter(menu => {
+                            console.log(`Checking menu with path ${menu.path}`);
+                            const isAllowed = ['1', '2', '3'].includes(menu.path);
+                            console.log(`Path ${menu.path} is included? ${isAllowed}`);
+                            return isAllowed;
+                        });
+                        break;
+                    case 1: // roleId为1时，去除权限功能及其子项
+                        filteredMenu = this.menuList.filter(menu => menu.path !== '5');
+                        break;
+                    case 2: // roleId为2时，保留所有菜单但去除管理员管理子项
+                        filteredMenu = JSON.parse(JSON.stringify(this.menuList)); // 复制menuList以避免直接修改原数组
+                        filteredMenu.find(menu => menu.path === '5').children = menu.children.filter(child => child.path !== '/5-2');
+                        break;
+                    case 3: // roleId为3的用户可以看到所有菜单
+                        filteredMenu = this.menuList;
+                        break;
+                    default:
+                        // 默认情况下，如果没有匹配的roleId处理逻辑，可以展示空菜单
+                        console.warn("Unexpected roleId encountered:", roleId);
+                }
+
+                // 将过滤后的菜单赋值给data中的menuList
+                this.filteredMenu = filteredMenu;
+                this.$nextTick(() => {
+                    console.log("After filtering in nextTick, filteredMenu:", this.filteredMenu);
+                });
+
             }
         }
     });

@@ -125,6 +125,8 @@
                         localStorage.setItem('token', response.data.data.token);
                         // 将从服务器获取的用户名（这里是"data.username"）存储并显示
                         localStorage.setItem('username', response.data.data.username);
+                        localStorage.setItem('roleId', response.data.data.roleId)
+
                         this.username = response.data.data.username; // 更新Vue实例中的username数据
 
                         alert('登录成功！');

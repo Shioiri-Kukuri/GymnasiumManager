@@ -51,10 +51,10 @@
             </nav>
         </el-header>
         <el-container>
-            <el-aside width="200px">
+            <el-aside v-if="roleId !== 0" width="200px">
                 <el-menu>
                     <el-submenu
-                            v-for="(menu, menuIndex) in menuList"
+                            v-for="(menu, menuIndex) in filteredMenus"
                             :key="menuIndex"
                             :index="menu.path"
                     >
@@ -72,11 +72,15 @@
                     </el-submenu>
                 </el-menu>
             </el-aside>
+            <div v-else>
+                <!-- 加载指示符，例如旋转图标 -->
+                <i class="el-icon-loading"></i> 正在加载...
+            </div>
             <el-container>
                 <iframe
                         name="right"
                         class="el-main"
-                        src="ordersetting.html"
+                        src="orderSetting.html"
                         width="100%"
                         height="580px"
                         frameborder="0"
@@ -98,7 +102,9 @@
                 username: '游客请登录',
                 account: null,
                 role: null,
+                roleId: 0, // 初始化roleId为0，代表未登录状态
                 isLoggedIn: false,
+                filteredMenuList: [],
                 menuList: [
                     {
                         "path": "1",
@@ -120,8 +126,13 @@
                             },
                             {
                                 "path": "/2-2",
-                                "title": "场地预约管理",
+                                "title": "场地预约",
                                 "linkUrl":"orderField.html"
+                            },
+                            {
+                                "path":"/2-3",
+                                "title":"场地预约管理",
+                                "linkUrl":"fieldOrderSetting.html"
                             }
                         ]
                     },
@@ -131,15 +142,21 @@
                         "icon":"fa-tty",
                         "children": [
                             {
-                                "path": "/3-2",
+                                "path": "/3-1",
                                 "title": "赛事列表",
                                 "linkUrl":"competition.html",
                                 "children":[]
                             },
                             {
-                                "path": "/3-3",
+                                "path": "/3-2",
                                 "title": "赛事类型管理",
                                 "linkUrl":"competition_type.html",
+                                "children":[]
+                            },
+                            {
+                                "path": "/3-3",
+                                "title": "赛事公告管理",
+                                "linkUrl":"competition_notice.html",
                                 "children":[]
                             },
                             {
@@ -151,7 +168,7 @@
                             {
                                 "path": "/3-5",
                                 "title": "公告管理",
-                                "linkUrl":"cnotice.html",
+                                "linkUrl":"notice.html",
                                 "children":[]
                             },
                         ]
@@ -182,10 +199,29 @@
             loginOrProfileActions() {
                 return this.isLoggedIn
                     ? [
-                        { title: '切换用户', linkUrl: 'main.html' },
+                        { title: '登出', linkUrl: 'main.html' },
                     ]
                     : [{ title: '登录', linkUrl: 'login.html' }];
-            }
+            },
+            // 使用计算属性来动态过滤菜单
+            filteredMenus() {
+                // 根据roleId过滤菜单
+                let allowedMenus = this.menuList;
+                if(this.roleId === 0){
+                    return this.menuList.filter(menu => ['1', '2', '3'].includes(menu.path));
+                } else if(this.roleId === 1) {
+                    // roleId为1时，去除权限功能及其子项
+                    allowedMenus = this.menuList.filter(menu => menu.path !== '5');
+                } else if (this.roleId === 2) {
+                    // roleId为2时，去除管理员管理
+                    allowedMenus.forEach(menu => {
+                        if (menu.path === '5') {
+                            menu.children = menu.children.filter(child => child.path !== '/5-2');
+                        }
+                    });
+                }
+                return allowedMenus;
+            },
         },
         created() {
             // 直接从localStorage获取用户名并设置到account
@@ -211,8 +247,74 @@
                 localStorage.removeItem('username');
                 this.username = '';
                 window.location.href = 'login.html'; // 或其他登出后的重定向页面
+            },
+            // 解析Token设置roleId
+            // 当roleId变化时，filteredMenus会自动重新计算
+            setRoleId(roleId) {
+                localStorage.setItem('roleId', roleId);
+                this.roleId = roleId;
+            },
+            // 解析Token并获取roleId
+            async getCurrentRoleIdFromToken() {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.warn('Token not found in local storage.');
+                    return 0; // 默认roleId
+                }
+
+                try {
+                    const decodedPayload = this.decodeJwt(token);
+                    return decodedPayload.roleId || 0; // 默认roleId
+                } catch (e) {
+                    console.error('Failed to parse token:', e);
+                    return 0;
+                }
+            },
+
+            decodeJwt(token) {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            },
+
+            async fetchData() {
+                // 假设这是从API获取用户信息的方法，返回包含roleId的对象
+                try {
+                    const userData = await this.getUserInfo();
+                    this.account = userData.account;
+                    this.roleId = userData.roleId;
+                    this.filteredMenus = this.filteredMenus; // 触发filteredMenus的重新计算
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                    // 处理错误，如显示错误消息
+                }
+            },
+
+            async getUserInfo() {
+                // 这里使用axios作为示例，确保你已经安装并导入了axios库
+                try {
+                    const response = await axios.get('/user/info.do');
+                    return response.data; // 假设API返回的数据结构包含了你需要的所有用户信息，如{ accountId: ..., roleId: ... }
+                } catch (error) {
+                    console.error('Error fetching user info:', error);
+                    throw error; // 重新抛出错误，以便在调用处可以处理
+                }
+            },
+        },
+        // 在页面加载完成时，尝试获取并设置roleId
+        async mounted() {
+            try {
+                const roleId = await this.getCurrentRoleIdFromToken(); // 异步解析JWT并返回roleId
+                this.setRoleId(roleId); // 设置roleId
+                this.fetchData(); // 页面加载时获取数据
+            } catch (error) {
+                console.error('Error setting roleId:', error);
+                // 处理错误情况，如重定向到登录页
             }
-        }
+        },
     });
 
     // 页面加载时调整容器宽度
