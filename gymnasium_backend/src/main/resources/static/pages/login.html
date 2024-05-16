@@ -159,34 +159,42 @@
             //注册添加用户
             handleAdd() {
                 // 校验表单输入项是否合法
-                this.$refs['dataAddForm'].validate((valid) => {
+                this.$refs['dataAddForm'].validate(async (valid) => {
                     if (valid) {
                         // 正确地合并formData对象和roleId属性
                         let postData = {...this.formData, roleId: 1};
 
-                        // 表单数据校验通过，发送ajax请求将表单数据提交到后台
-                        axios.post("/user/adduser.do", postData).then((response) => {
+                        try {
+                            // 发送添加用户的请求
+                            const response = await axios.post("/user/adduser.do", postData);
+
                             // 隐藏新增窗口
                             this.dialogFormVisible = false;
 
-                            // 判断后台返回的flag值，true表示添加操作成功，false为添加操作失败
+                            // 根据后端返回的flag和可能的错误信息进行处理
                             if (response.data.flag) {
                                 this.$message({
-                                    message: response.data.message,
+                                    message: response.data.message || "添加成功",
                                     type: 'success'
                                 });
                             } else {
-                                this.$message.error(response.data.message);
+                                // 特别处理账户已存在的情况，这里假设后端会返回特定的错误码或消息标识账户已存在
+                                if (response.data.code === 'ACCOUNT_EXISTS' || response.data.message.includes('账户已存在')) {
+                                    this.$message.error("账户已存在");
+                                } else {
+                                    this.$message.error(response.data.message || "添加失败");
+                                }
                             }
-                        }).finally(() => {
-                            this.findPage();
-                        });
+                        } catch (error) {
+                            // 处理网络错误或其他异常
+                            console.error('添加用户请求出错：', error);
+                            this.$message.error("请求错误，请重试");
+                        }
                     } else {
                         this.$message.error("表单数据校验失败");
-                        return false;
                     }
                 });
-            },
+            }
 
         },
         mounted() {

@@ -100,13 +100,6 @@
                 roleId: 1,
                 isLoggedIn: false,
                 filteredMenu: [
-                    {
-                        "path": "1",
-                        "title": "工作台",
-                        "icon":"fa-dashboard",
-                        "children": [
-                        ]
-                    }
                 ],
                 menuList: [
                     {
@@ -263,8 +256,16 @@
                         filteredMenu = this.menuList.filter(menu => menu.path !== '5');
                         break;
                     case 2: // roleId为2时，保留所有菜单但去除管理员管理子项
-                        filteredMenu = JSON.parse(JSON.stringify(this.menuList)); // 复制menuList以避免直接修改原数组
-                        filteredMenu.find(menu => menu.path === '5').children = menu.children.filter(child => child.path !== '/5-2');
+                        // 复制menuList以避免直接修改原数组
+                        filteredMenu = JSON.parse(JSON.stringify(this.menuList));
+                        // 查找path为'5'的菜单项（权限功能）
+                        const adminMenu = filteredMenu.find(menu => menu.path === '5');
+                        if (adminMenu && adminMenu.children) {
+                            // 过滤掉path为'/5-2'的子项（管理员管理）
+                            adminMenu.children = adminMenu.children.filter(child => child.path !== '/5-2');
+                        } else {
+                            console.warn("Menu with path '5' not found or has no children.");
+                        }
                         break;
                     case 3: // roleId为3的用户可以看到所有菜单
                         filteredMenu = this.menuList;

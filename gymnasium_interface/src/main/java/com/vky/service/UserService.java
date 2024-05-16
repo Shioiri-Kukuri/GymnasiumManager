@@ -17,5 +17,8 @@ public interface UserService {
     void add(User user);
 
     PageResult pageQuery(Integer currentPage, Integer pageSize, String queryString);
+    PageResult pageQueryUser(Integer currentPage, Integer pageSize, String queryString);
+
+
     void delete(Integer account);
 }

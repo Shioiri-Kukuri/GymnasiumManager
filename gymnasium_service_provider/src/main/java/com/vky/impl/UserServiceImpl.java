@@ -53,6 +53,14 @@ public class UserServiceImpl implements UserService {
         return new PageResult(page.getTotal(), page.getResult());
     }
 
+
+    public PageResult pageQueryUser(Integer currentPage, Integer pageSize, String queryString) {
+        PageHelper.startPage(currentPage, pageSize);
+        Page<User> page = userDao.selectUserByCondition(queryString);
+        return new PageResult(page.getTotal(), page.getResult());
+    }
+
+
     @Override
     public void delete(Integer account) {
         userDao.delete(account);

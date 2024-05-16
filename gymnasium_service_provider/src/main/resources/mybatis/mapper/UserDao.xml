@@ -28,11 +28,24 @@
             VALUES(#{account},#{password},#{name},#{roleId})
     </insert>
 
-    <!-- 分页查询用户 -->
+
+
+    <!-- 分页查询 -->
     <select id="pageQuery" resultType="com.vky.pojo.User">
         SELECT * FROM u_user
         <if test="queryString != null and queryString.length > 0">
             WHERE name LIKE concat('%',#{queryString},'%')
+        </if>
+        LIMIT
+        #{currentPage},#{pageSize}
+    </select>
+
+    <!-- 分页查询用户 -->
+    <select id="pageQueryUser" resultType="com.vky.pojo.User">
+        SELECT * FROM u_user
+        WHERE role_id = 1
+        <if test="queryString != null and queryString.length > 0">
+            AND name LIKE concat('%',#{queryString},'%')
         </if>
         LIMIT
         #{currentPage},#{pageSize}
@@ -44,6 +57,14 @@
         SELECT * FROM u_user
         <if test="value != null and value.length > 0">
             WHERE name LIKE concat('%',#{value},'%')
+        </if>
+    </select>
+
+    <select id="selectUserByCondition" resultType="com.vky.pojo.User">
+        SELECT * FROM u_user
+        WHERE role_id = 1
+        <if test="value != null and value.length > 0">
+            AND name LIKE concat('%',#{value},'%')
         </if>
     </select>
 

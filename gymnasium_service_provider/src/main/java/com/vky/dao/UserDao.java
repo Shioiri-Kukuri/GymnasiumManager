@@ -7,6 +7,7 @@ import com.vky.pojo.User;
 public interface UserDao {
 
     Page<User> selectByCondition(String queryString);
+    Page<User> selectUserByCondition(String queryString);
 
     public User findByAccountAndPassword(User user);
     Integer findRoleIdByAccount(String Account);
@@ -18,5 +19,8 @@ public interface UserDao {
 
 
     PageResult pageQuery(Integer currentPage, Integer pageSize, String queryString);
+
     void delete(Integer account);
+
+
 }

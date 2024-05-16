@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.vky.utils.JwtUtil;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,34 +47,6 @@ public class UserController {
         }
     }
 
-    @PostMapping("/logout.do")
-    public Result logout(@RequestHeader("Authorization") String token) {
-        try {
-            // 在尝试使令牌失效之前，先验证其有效性。
-            // 这一步确保我们在继续操作前使用的是一个有效的令牌。
-            if (JwtUtil.validateToken(token)) {
-                // 假设JwtUtil中有一个方法来处理令牌失效的逻辑，
-                // 这可能涉及到将令牌添加到黑名单中或管理其有效状态。
-                // 注意：由于JWT无状态的特性，实际的JWT失效处理比较复杂；
-                // 通常，你需要在服务器端维护一个令牌黑名单。
-                boolean isLogoutSuccess = JwtUtil.invalidateToken(token);
-
-                if (isLogoutSuccess) {
-                    // 通知客户端登出成功。
-                    return new Result(true, "登出成功");
-                } else {
-                    // 如果令牌未能失效，则返回相应的错误信息。
-                    return new Result(false, "登出失败，无法使令牌失效");
-                }
-            } else {
-                // 如果令牌已失效，告知客户端。
-                return new Result(false, "无效的令牌，您可能已经登出");
-            }
-        } catch (Exception e) {
-            // 捕获与令牌验证或失效相关的所有异常。
-            return new Result(false, "登出时发生错误：" + e.getMessage());
-        }
-    }
 
     @GetMapping("/getUserRole.do")
     public Result getUserRole(@RequestHeader("Authorization") String token) { // 假设JWT Token在Authorization头中传递
@@ -97,14 +70,17 @@ public class UserController {
     }
 
     @RequestMapping("/adduser.do")
-    public Result adduser(@RequestBody User user){
-        try{
+    public Result addUser(@RequestBody User user) {
+        try {
             user.setRoleId(1);
             userService.add(user);
-        }catch(Exception e){
-            return new Result(false,"添加失败");
+        } catch (DuplicateKeyException e) { // 捕获主键或唯一键冲突异常
+            // 这里假设您的Result构造函数接受code和message参数
+            return new Result(false, "账户已存在");
+        } catch (Exception e) {
+            return new Result(false, "添加失败");
         }
-        return new Result(true,"添加成功");
+        return new Result(true, "添加成功");
     }
 
     @RequestMapping("/addmentadmin.do")
@@ -148,6 +124,16 @@ public class UserController {
         return pageResult ;
     }
 
+    @RequestMapping("/findUserPage.do")
+    public PageResult findUserPage(@RequestBody QueryPageBean queryPageBean){
+        PageResult pageResult = userService.pageQueryUser(
+                queryPageBean.getCurrentPage(),
+                queryPageBean.getPageSize(),
+                queryPageBean.getQueryString()
+        );
+        return pageResult ;
+    }
+
     @RequestMapping("/delete.do")
     public Result delete(Integer account){
         try{
@@ -158,31 +144,7 @@ public class UserController {
         return new Result(true,"删除成功");
     }
 
-    @RequestMapping("/info.do")
-    public Result info(@RequestHeader("Authorization") String token) {
-        try {
-            // 在尝试使令牌失效之前，先验证其有效性。
-            // 这一步确保我们在继续操作前使用的是一个有效的令牌。
-            if (JwtUtil.validateToken(token)) {
-                // 假设JwtUtil中有一个方法来处理令牌失效的逻辑，
-                // 这可能涉及到将令牌添加到黑名单中或管理其有效状态。
-                // 注意：由于JWT无状态的特性，实际的JWT失效处理比较复杂；
-                // 通常，你需要在服务器端维护一个令牌黑名单。
-                boolean isLogoutSuccess = JwtUtil.invalidateToken(token);
-                if (isLogoutSuccess) {
-                    // 通知客户端登出成功。
-                    return new Result(true, "登出成功");
-                } else {
-                    // 如果令牌未能失效，则返回相应的错误信息。
-                    return new Result(false, "登出失败，无法使令牌失效");
-                }
 
-            }
-        }catch (Exception e){
-            return new Result(false,"获取信息失败");
-        }
-        return new Result(true,"获取信息成功");
-    }
 }
 
 
