@@ -94,6 +94,7 @@
         .el-table td {
             text-align: center;
         }
+
     </style>
 </head>
 <body class="hold-transition">
@@ -106,7 +107,13 @@
             <div class="search-container">
                 <div>
                     <span class="title">赛事查询：</span>
-                    <el-input placeholder="输入赛事名称" v-model="searchInput" prefix-icon="el-icon-search" @icon-click="search()"></el-input>
+                    <el-input
+                            placeholder="输入赛事名称"
+                            v-model="searchInput"
+                            prefix-icon="el-icon-search"
+                            @icon-click="search()"
+                            @keyup.enter.native="search()">
+                    </el-input>
                 </div>
             </div>
         </div>
@@ -115,9 +122,9 @@
         <el-table class="result-table" :data="resultList" border>
             <el-table-column prop="id" label="序号"></el-table-column>
             <el-table-column prop="name" label="赛事名称"></el-table-column>
-            <el-table-column prop="type" label="赛事类型"></el-table-column>
-            <el-table-column prop="location" label="赛事场地"></el-table-column>
-            <el-table-column prop="time" label="赛事时间"></el-table-column>
+            <el-table-column prop="typeName" label="赛事类型"></el-table-column>
+            <el-table-column prop="fieldName" label="赛事场地"></el-table-column>
+            <el-table-column prop="startTime" label="赛事时间"></el-table-column>
         </el-table>
     </div>
 </div>
