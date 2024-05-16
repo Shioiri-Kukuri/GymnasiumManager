@@ -163,7 +163,7 @@
                             },
                             {
                                 "path": "/3-5",
-                                "title": "公告管理",
+                                "title": "赛事公告",
                                 "linkUrl":"notice.html",
                                 "children":[]
                             },
@@ -242,20 +242,32 @@
                 console.log("Start filtering, menuList:", this.menuList);
                 console.log(`Filtering menu by roleId: ${roleId}`);
                 roleId = parseInt(roleId, 10);
-                console.log(typeof roleId)
                 switch (roleId) {
                     case 0: // roleId为0时，允许访问路径为'1', '2', '3'的菜单项
-                        filteredMenu = this.menuList.filter(menu => {
-                            console.log(`Checking menu with path ${menu.path}`);
-                            const isAllowed = ['1', '2', '3'].includes(menu.path);
-                            console.log(`Path ${menu.path} is included? ${isAllowed}`);
-                            return isAllowed;
-                        });
+                        return menuList.filter(menu => ['1', '2', '3'].includes(menu.path));
                         break;
-                    case 1: // roleId为1时，去除权限功能及其子项
-                        filteredMenu = this.menuList.filter(menu => menu.path !== '5');
+                    case 1:
+                        // roleId为1时，去除权限功能及其子项
+                        // 只保留赛事管理下的赛事公告和赛事查询
+                        // 只保留场地管理下的场地预约
+                        //filteredMenu = this.menuList.filter(menu => menu.path !== '5');
+                        filteredMenu = this.menuList
+                            // 筛选出不是权限功能的菜单项
+                            .filter(menu => menu.path !== '5')
+                            // 之后再筛选出赛事管理下的特定子项和场地管理下的特定子项
+                            .map(menu => {
+                                if (menu.path === '3') { // 赛事管理
+                                    menu.children = menu.children.filter(child => ['/3-4', '/3-5'].includes(child.path));
+                                } else if (menu.path === '2') { // 场地管理
+                                    menu.children = menu.children.filter(child => child.path === '/2-2');
+                                }
+                                return menu;
+                            })
+                            // 过滤掉没有子项的菜单（如果有的话，这取决于是否想显示无子项的父级菜单）
+                            .filter(menu => !('children' in menu) || menu.children.length > 0);
                         break;
-                    case 2: // roleId为2时，保留所有菜单但去除管理员管理子项
+                    case 2:
+                        // roleId为2时，保留所有菜单但去除管理员管理子项
                         // 复制menuList以避免直接修改原数组
                         filteredMenu = JSON.parse(JSON.stringify(this.menuList));
                         // 查找path为'5'的菜单项（权限功能）
