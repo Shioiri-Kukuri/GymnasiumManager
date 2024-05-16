@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>赛事查询</title>
+    <meta name="description" content="赛事查询">
+    <meta name="keywords" content="赛事查询">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../plugins/elementui/index.css">
+    <link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        img{
+            border-radius: 20px; /* 可以根据需要调整圆角半径 */
+            display: block;
+            margin: 0 auto;
+        }
+        .background-image {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .search-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .search-input {
+            position: relative;
+            width: 300px;
+            height: 40px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            padding: 0 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            color: #fff;
+            background-color: transparent;
+            padding-left: 30px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .result-table {
+            margin-top: 40px;
+        }
+
+        .el-table {
+            width: 100%;
+        }
+
+        .el-table th,
+        .el-table td {
+            padding: 10px;
+        }
+
+        .el-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .el-table td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="hold-transition">
+<div id="app">
+    <div class="content-header">
+        <!-- 一张大的精美照片作为背景图层 -->
+        <div class="background-image">
+            <img src="../img/backgroud.jpg" alt="赛事照片" style="width: 100%">
+            <!-- 赛事查询标题、输入框和按钮 -->
+            <div class="search-container">
+                <div>
+                    <span class="title">赛事查询：</span>
+                    <el-input placeholder="输入赛事名称" v-model="searchInput" prefix-icon="el-icon-search" @icon-click="search()"></el-input>
+                </div>
+            </div>
+        </div>
+
+        <!-- 查询数据回显列表 -->
+        <el-table class="result-table" :data="resultList" border>
+            <el-table-column prop="id" label="序号"></el-table-column>
+            <el-table-column prop="name" label="赛事名称"></el-table-column>
+            <el-table-column prop="type" label="赛事类型"></el-table-column>
+            <el-table-column prop="location" label="赛事场地"></el-table-column>
+            <el-table-column prop="time" label="赛事时间"></el-table-column>
+        </el-table>
+    </div>
+</div>
+</body>
+<script src="../js/vue.js"></script>
+<script src="../plugins/elementui/index.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            resultList: [],
+            searchInput: ''
+        },
+        methods: {
+            search() {
+                // 实现查询功能
+                console.log('查询：', this.searchInput);
+            }
+        }
+    })
+</script>
+</html>

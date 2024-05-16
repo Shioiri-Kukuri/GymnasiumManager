@@ -38,6 +38,7 @@
                 <el-table-column prop="code" label="赛事编码" align="center"></el-table-column>
                 <el-table-column prop="name" label="赛事名称" align="center"></el-table-column>
                 <el-table-column prop="typeName" label="赛事类型" align="center"></el-table-column>
+                <el-table-column prop="fieldName" label="赛事场地" align="center"></el-table-column>
                 <el-table-column prop="description" label="赛事说明" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
@@ -81,6 +82,18 @@
                                                 :key="item.sort"
                                                 :label="item.name"
                                                 :value="item.name">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="赛事场地">
+                                    <el-select v-model="formData.fieldName" filterable placeholder="请选择">
+                                        <el-option
+                                                v-for="item in fieldOptions"
+                                                :key="item.field_id"
+                                                :label="item.field_name"
+                                                :value="item.field_name">
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
@@ -130,6 +143,18 @@
                                     </el-select>
                                 </el-form-item>
                             </el-col>
+                            <el-col :span="12">
+                                <el-form-item label="赛事场地">
+                                    <el-select v-model="formData.fieldName" filterable placeholder="请选择">
+                                        <el-option
+                                                v-for="item in fieldOptions"
+                                                :key="item.field_id"
+                                                :label="item.field_name"
+                                                :value="item.field_name">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
                         </el-row>
                         <el-row>
                             <el-col :span="24">
@@ -158,6 +183,7 @@
         el: '#app',
         data: {
             typeOptions: [],
+            fieldOptions: [],
             pagination: {//分页相关模型数据
                 currentPage: 1,//当前页码
                 pageSize: 10,//每页显示的记录数
@@ -259,16 +285,22 @@
             handleCreate() {
                 this.resetForm();
                 this.dialogFormVisible = true;
-                //重置
                 this.typeOptions = [];
-                //发送ajax请求查询所有赛事类型信息
-                axios.get("/type/findAll.do").then((res) => {
-                    if (res.data.flag) {
-                        //查询成功，将返回的类型信息列表赋值给typeOptions
-                        this.typeOptions = res.data.data;
+                this.fieldOptions = [];
 
+                const url = "/type/findAll.do";
+
+                axios.get(url).then((res) => {
+                    if (res.data.flag) {
+                        this.typeOptions = res.data.data;
+                        axios.get("/field/findByStatus.do?status=1").then((res) => {
+                            if (res.data.flag) {
+                                this.fieldOptions = res.data.data;
+                            } else {
+                                this.$message.error(res.data.message);
+                            }
+                        });
                     } else {
-                        //查询失败，提示错误信息
                         this.$message.error(res.data.message);
                     }
                 });

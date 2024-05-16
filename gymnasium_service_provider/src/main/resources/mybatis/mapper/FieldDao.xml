@@ -20,10 +20,14 @@
     
 <!--    根据id查询-->
     <select id="findById" parameterType="int" resultType="com.vky.pojo.Field">
-        select * from f_field where id = #{id}
+        select * from f_field where field_id = #{id}
     </select>
     <select id="findByStatus" resultType="com.vky.pojo.Field" parameterType="int">
-        select * from f_field where status = #{status}
+        select * from f_field where field_status = #{status}
+    </select>
+    <!--根据名称查询场地信息-->
+    <select id="findByName" resultType="com.vky.pojo.Field" parameterType="string">
+        select * from f_field where field_name = #{fieldName}
     </select>
 
     <!--    修改场地-->
@@ -31,11 +35,11 @@
         update f_field
         set field_no=#{fieldNo},field_name = #{fieldName}
            ,field_type = #{fieldType},field_cost = #{fieldCost}
-        where id = #{id}
+        where field_id = #{id}
     </update>
 
 <!--    删除场地-->
     <delete id="delete" parameterType="int">
-            delete from f_field where id = #{id}
+            delete from f_field where field_id = #{id}
     </delete>
 </mapper>

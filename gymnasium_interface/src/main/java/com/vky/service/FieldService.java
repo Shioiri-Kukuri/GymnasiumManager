@@ -19,4 +19,6 @@ public interface FieldService {
 
 
     List<Field> findByStatus(Integer status);
+
+    Field findByName(String name);
 }

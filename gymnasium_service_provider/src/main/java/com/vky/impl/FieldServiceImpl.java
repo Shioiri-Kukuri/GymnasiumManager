@@ -45,7 +45,12 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public List<Field> findByStatus(Integer status) {
-        return fieldDao.findByStatus();
+        return fieldDao.findByStatus(status);
+    }
+
+    @Override
+    public Field findByName(String name) {
+        return fieldDao.findByName(name);
     }
 
 

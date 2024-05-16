@@ -4,9 +4,9 @@
 <mapper namespace="com.vky.dao.CompetitionDao">
     <!--新增-->
     <insert id="save" parameterType="com.vky.pojo.Competition">
-        insert into c_competition(name, code, type_name, status, description, create_by, create_time, update_by, update_time)
+        insert into c_competition(name, code, type_name, field_name, status, description, create_by, create_time, update_by, update_time)
         values
-            (#{name}, #{code}, #{typeName}, #{status}, #{description}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime})
+            (#{name}, #{code}, #{typeName}, #{fieldName}, #{status}, #{description}, #{createBy}, #{createTime}, #{updateBy}, #{updateTime})
     </insert>
     <update id="edit" parameterType="com.vky.pojo.Competition">
         update c_competition
@@ -20,11 +20,17 @@
             <if test="typeName != null">
                 type_name = #{typeName},
             </if>
+            <if test="fieldName != null">
+                field_name = #{fieldName},
+            </if>
             <if test="status != null">
                 status = #{status},
             </if>
             <if test="description != null">
                 description = #{description},
+            </if>
+            <if test="startTime != null">
+                startTime = #{startTime},
             </if>
             <if test="createBy != null">
                 create_by = #{createBy},

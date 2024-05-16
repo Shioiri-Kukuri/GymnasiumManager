@@ -53,15 +53,15 @@ public class FieldController {
     }
 
 //    根据空闲状态查询
-    @RequestMapping("/findByStatus")
-    public Result findByKeys(Integer status){
-        try {
-            List<Field> fieldList = fieldService.findByStatus(status);
+    @RequestMapping("/findByStatus.do")
+    public Result findByStatus(Integer status){
+        List<Field> fieldList = fieldService.findByStatus(status);
+        if (fieldList != null && fieldList.size() > 0){
+            Result result = new Result(true,"根据status查询成功");
+            result.setData(fieldList);
+            return result;
         }
-        catch(Exception e){
-            return new Result(false,"查询失败");
-        }
-        return new Result(true,"查询成功");
+        return new Result(false,"根据status查询失败");
     }
 
     @RequestMapping("/edit.do")
@@ -87,4 +87,19 @@ public class FieldController {
         return new Result(true,"删除成功");
     }
 
+    /**
+     * 根据场地名称查询场地信息
+     * @param name
+     * @return
+     */
+    @RequestMapping("/findByName.do")
+    public Result findByName(String name){
+        Field field = fieldService.findByName(name);
+        if(field != null){
+            Result result = new Result(true,"根据id查询成功");
+            result.setData(field);
+            return result;
+        }
+        return new Result(false,"根据id查询失败");
+    }
 }

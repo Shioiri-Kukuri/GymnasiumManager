@@ -16,5 +16,7 @@ public interface FieldDao {
 
     void delete(Integer id);
 
-    List<Field> findByStatus();
+    List<Field> findByStatus(Integer status);
+
+    Field findByName(String name);
 }
